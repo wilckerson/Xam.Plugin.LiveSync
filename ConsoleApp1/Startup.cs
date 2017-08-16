@@ -95,7 +95,10 @@ namespace XamarinFormsLiveSync.Server
 
                 if (string.IsNullOrEmpty(textContent)) { return; }
 
-                string data = $"{e.Name}\r{textContent}";
+                var lastIdx = path.LastIndexOf('\\');
+                string name = path.Substring(lastIdx+1);
+
+                string data = $"{name}_ENDNAME_{textContent}";
                 await _webSocketHandler.SendMessageToAllAsync(data);
             }
         }
