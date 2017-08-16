@@ -153,6 +153,35 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                     //    prop.SetValue(obj, v);
                     //}
 
+                    if (attr.Value.StartsWith("{") && attr.Value.Contains("Binding"))
+                    {
+                        var bindingPath = attr.Value;                           
+
+                        string format = null;
+                        if (bindingPath.ToLower().Contains("stringformat"))
+                        {
+                            var parts = bindingPath.Split(',');
+                            bindingPath = parts[0].Trim();
+
+                            format = parts[1].Trim().Substring(14);
+                            format = format.Substring(0, format.Length - 2);
+                        }
+
+                        bindingPath = bindingPath.Replace("{", string.Empty)
+                            .Replace("}", string.Empty)
+                            .Replace("Binding", string.Empty)
+                            .Trim();
+
+                        var binding = new Binding(bindingPath, stringFormat: format);
+                        var fieldInfo = type.GetRuntimeField(attr.Key + "Property");
+
+
+                        BindableProperty bindProp = (BindableProperty)fieldInfo.GetValue(null);
+                        (obj as BindableObject).SetBinding(bindProp, binding);
+
+                        continue;
+                    }
+
                     if (prop.PropertyType == typeof(LayoutOptions))
                     {
                         if (loConverter == null)

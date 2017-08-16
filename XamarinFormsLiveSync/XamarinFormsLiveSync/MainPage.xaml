@@ -15,18 +15,17 @@
         <Label Grid.Column="1" Text="llll"/>
     </Grid>-->
     
-    <!--<StackLayout>   
-        
-        <Label Text="Welcome to Xamarin Forms Ederzão "
+    <StackLayout>
+
+        <Label Text="{Binding Prop, StringFormat='format: {0}'}"
                TextColor="Red"
                VerticalOptions="Center" 
                HorizontalOptions="Center" />
 
-
-        <Button Text="LiveSync" HorizontalOptions="Start"/>
-    </StackLayout>-->
+        <Button Text="{Binding Prop }" HorizontalOptions="Start"/>
+    </StackLayout>
     
-    <Grid BackgroundColor="#9E1521">
+    <!--<Grid BackgroundColor="#9E1521">
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
             <RowDefinition Height="50*"/>
@@ -52,7 +51,7 @@
                 <ActivityIndicator IsRunning="True" IsVisible="{Binding IsLoading}"  Color="#FFAB00"/>
             </StackLayout>
         </Frame>
-    </Grid>
+    </Grid>-->
 
 
 </ContentPage>
