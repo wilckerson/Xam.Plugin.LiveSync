@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Websockets;
 using Xamarin.Forms;
+using XamarinFormsLiveSync.Core.XamlParser;
 
 namespace XamarinFormsLiveSync
 {
@@ -16,8 +17,8 @@ namespace XamarinFormsLiveSync
             var page = new MainPage();
             MainPage = page;
             //MainPage = new NavigationPage(new MainPage());
-
-            var newContent = ParseXamlToView("");
+            
+            var newContent = XamlParser.ParseXamlToView(SampleXaml2);
             page.Content = newContent;
 
             //ListenToLiveSyncServer();
@@ -142,5 +143,12 @@ namespace XamarinFormsLiveSync
         {
             return new Label() { Text = DateTime.Now.ToString() };
         }
+
+        static string SampleXaml2 = @"
+<ContentPage>
+ <Label Text=""{Binding NenhumItemMsg}"" IsVisible=""true"" HorizontalOptions=""Center"" Margin=""16""/>
+
+</ContentPage>
+";
     }
 }

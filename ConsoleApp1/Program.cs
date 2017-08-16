@@ -8,21 +8,22 @@ namespace XamarinFormsLiveSync.Server
     {
         static void Main(string[] args)
         {
-            //var host = new WebHostBuilder()
-            //    .UseUrls("http://*:5000")
-            //    .UseKestrel()
-            //    .UseContentRoot(Directory.GetCurrentDirectory())
-            //    .UseIISIntegration()
-            //    .UseStartup<Startup>()
-            //    .Build();
+            var host = new WebHostBuilder()
+                .UseUrls("http://*:5000")
+                .UseKestrel()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
 
-            //host.Run();
-            XamlParser parser = new XamlParser();
-            var r = parser.ExtractAstNodes(SampleXaml);
+            host.Run();
+
         }
+       
+
 
         static string SampleXaml = @"
-          <?xml version=""1.0"" encoding=""utf-8"" ?>
+         <?xml version=""1.0"" encoding=""utf-8"" ?>
 <ContentPage xmlns=""http://xamarin.com/schemas/2014/forms""
              xmlns:x=""http://schemas.microsoft.com/winfx/2009/xaml""
              xmlns:controls=""clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions""

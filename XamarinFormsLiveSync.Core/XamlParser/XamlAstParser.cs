@@ -7,39 +7,12 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace XamarinFormsLiveSync.Server
+namespace XamarinFormsLiveSync.Core.XamlParser
 {
-    public class AstNode
+    public class XamlAstParser
     {
-
-        public string Name { get; set; }
-        public string Namespace { get; set; }
-        public Dictionary<string, List<AstNode>> ElementProperties { get; set; }
-        public Dictionary<string, string> AttributeProperties { get; set; }
-        public Dictionary<string, string> AttachedProperties { get; set; }
-        public List<AstNode> Childrens { get; set; }
-
-        public AstNode()
-        {
-            AttributeProperties = new Dictionary<string, string>();
-            AttachedProperties = new Dictionary<string, string>();
-            ElementProperties = new Dictionary<string, List<AstNode>>();
-
-            Childrens = new List<AstNode>();
-        }
-
-        public override string ToString()
-        {
-            return Childrens.Any() ? $"<{Name}>...</{Name}>" : $"<{Name} />";
-        }
-    }
-
-
-    public class XamlParser
-    {
-        //public View ParseXamlToView(string xaml) { }
-
-        public AstNode ExtractAstNodes(string xaml)
+        
+        public AstNode ExtractAst(string xaml)
         {
             var rootNode = new AstNode();
 

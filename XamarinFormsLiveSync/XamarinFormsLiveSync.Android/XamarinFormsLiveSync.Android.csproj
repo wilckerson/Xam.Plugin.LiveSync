@@ -127,7 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XamarinFormsLiveSync\XamarinFormsLiveSync.csproj">
-      <Project>{f20b497c-47af-4d52-96fe-75ee3773131a}</Project>
+      <Project>{552b7789-073d-4f07-a162-5d744cb8a745}</Project>
       <Name>XamarinFormsLiveSync</Name>
     </ProjectReference>
   </ItemGroup>
