@@ -186,7 +186,7 @@ namespace XamarinFormsLiveSync.Server
             while (socket.State == WebSocketState.Open)
             {
                 var result = await socket.ReceiveAsync(buffer: new ArraySegment<byte>(buffer),
-                                                       cancellationToken: CancellationToken.None);
+                                                       cancellationToken: CancellationToken.None).ConfigureAwait(false);
 
                 handleMessage(result, buffer);
             }

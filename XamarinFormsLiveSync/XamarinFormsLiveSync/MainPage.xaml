@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:XamarinFormsLiveSync"
              x:Class="XamarinFormsLiveSync.MainPage">
 
-	<Label Text="Welcome to Xamarin Forms!" 
+	<Label Text="Welcome to Xamarin Forms 7!" 
            VerticalOptions="Center" 
            HorizontalOptions="Center" />
 
