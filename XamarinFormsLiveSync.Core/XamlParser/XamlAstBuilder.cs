@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -12,13 +13,14 @@ namespace XamarinFormsLiveSync.Core.XamlParser
         LayoutOptionsConverter loConverter = null;
         ThicknessTypeConverter thicknessConverter = null;
         ColorTypeConverter colorConverter = null;
+        GridLengthTypeConverter gridLConverter = null;
 
         public XamlAstBuilder()
         {
             //Obtendo o assemblyQualifiedName padrão
             defaultAssemblyQualifiedName = new ContentPage().GetType().AssemblyQualifiedName;
         }
-        
+
         public object BuildNode(AstNode node)
         {
             //TODO: node.Namespace
@@ -31,6 +33,8 @@ namespace XamarinFormsLiveSync.Core.XamlParser
 
             var obj = Activator.CreateInstance(type);
             ApplyAttributes(type, obj, node);
+            ApplyAttachedProperties(type, obj, node);
+            ApplyElementProperties(type, obj, node);
             ApplyChildrens(type, obj, node);
 
             return obj;
@@ -40,8 +44,8 @@ namespace XamarinFormsLiveSync.Core.XamlParser
         {
             if (node.Childrens.Count > 0)
             {
-                var propChildren = type.GetRuntimeProperty("Children");
-                if(propChildren != null)
+                var propChildren = type.GetTypeInfo().GetDeclaredProperty("Children");
+                if (propChildren != null)
                 {
                     foreach (var children in node.Childrens)
                     {
@@ -52,54 +56,102 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                 }
                 else
                 {
-                    var propContent = type.GetRuntimeProperty("Content");
-                    if(propContent != null)
+                    var prop2Children = type.GetRuntimeProperty("Children");
+                    if (prop2Children != null)
                     {
-                        var subObj = BuildNode(node.Childrens.FirstOrDefault());
-                        propContent.SetValue(obj, subObj);
+                        foreach (var children in node.Childrens)
+                        {
+                            var subObj = BuildNode(children);
+                            var layout = (IList<View>)prop2Children.GetValue(obj);
+                            layout.Add((subObj as View));
+                        }
+                    }
+                    else
+                    {
+                        var propContent = type.GetRuntimeProperty("Content");
+                        if (propContent != null)
+                        {
+                            var subObj = BuildNode(node.Childrens.FirstOrDefault());
+                            propContent.SetValue(obj, subObj);
+                        }
                     }
                 }
-                //var contentType = typeof(ContentPropertyAttribute);
-                //var contentAttr = type.GetTypeInfo().CustomAttributes.FirstOrDefault(f => f.AttributeType == contentType);
-                //string contentPropName = contentAttr?.ConstructorArguments.ElementAtOrDefault(0).Value.ToString();
+            }
+        }
 
-                //if (!string.IsNullOrEmpty(contentPropName))
-                //{
-                //    var prop = type.GetRuntimeProperty(contentPropName);
+        void ApplyElementProperties(Type type, object obj, AstNode node)
+        {
+            foreach (var elmProp in node.ElementProperties)
+            {
+                var prop = type.GetRuntimeProperty(elmProp.Key);
 
-                //    if (prop.PropertyType == typeof(View))
-                //    {
-                //        var subObj = BuildNode(node.Childrens.FirstOrDefault());
-                //        prop.SetValue(obj, subObj);
-                //    }
-                //    else if (prop.PropertyType == typeof(IList<View>))
-                //    {
-                //        foreach (var children in node.Childrens)
-                //        {
-                //            var subObj = BuildNode(children);
-                //            var layout = (IList<View>)prop.GetValue(obj);
-                //            layout.Add((subObj as View));
-                //        }
-                //    }
-                //    else if (prop.PropertyType == typeof(string))
-                //    {
-                //        //TODO: Label.Text
-                //        //var subObj = BuildNode(node.Childrens.FirstOrDefault());
-                //        //prop.SetValue(obj, subObj);
-                //    }
+                foreach (var item in elmProp.Value)
+                {
+                    var subObj = BuildNode(item);
+                    if (prop.PropertyType == typeof(ColumnDefinitionCollection))
+                    {
+                        var lst = (ColumnDefinitionCollection)prop.GetValue(obj);
+                        lst.Add((subObj as ColumnDefinition));
+                    }
+                    else if (prop.PropertyType == typeof(RowDefinitionCollection))
+                    {
+                        var lst = (RowDefinitionCollection)prop.GetValue(obj);
+                        lst.Add((subObj as RowDefinition));
+                    }
+                }
 
+            }
+        }
 
-                //}
+        void ApplyAttachedProperties(Type type, object obj, AstNode node)
+        {
+            foreach (var attached in node.AttachedProperties)
+            {
+                if (attached.Key == "Grid.Row")
+                {
+                    int.TryParse(attached.Value, out int v);
+                    Grid.SetRow((obj as BindableObject), v);
+                    continue;
+                }
+                else if (attached.Key == "Grid.Column")
+                {
+                    int.TryParse(attached.Value, out int v);
+                    Grid.SetColumn((obj as BindableObject), v);
+                    continue;
+                }
+                else if (attached.Key == "Grid.ColumnSpan")
+                {
+                    int.TryParse(attached.Value, out int v);
+                    Grid.SetColumnSpan((obj as BindableObject), v);
+                    continue;
+                }
+                else if (attached.Key == "Grid.RowSpan")
+                {
+                    int.TryParse(attached.Value, out int v);
+                    Grid.SetRowSpan((obj as BindableObject), v);
+                    continue;
+                }
             }
         }
 
         void ApplyAttributes(Type type, object obj, AstNode node)
         {
+
             foreach (var attr in node.AttributeProperties)
             {
                 try
                 {
                     var prop = type.GetRuntimeProperty(attr.Key);
+
+                    //Verificando se a propriedade possui um TypeConverter
+                    //var typeConvertAttr = prop.CustomAttributes.FirstOrDefault(f => f.AttributeType == typeof(TypeConverterAttribute));
+                    //if(typeConvertAttr != null)
+                    //{
+                    //    var convertType = typeConvertAttr.ConstructorArguments[0].Value as Type;
+                    //    var converter = (TypeConverter)Activator.CreateInstance(convertType);
+                    //    var v = converter.ConvertFromInvariantString(attr.Value);
+                    //    prop.SetValue(obj, v);
+                    //}
 
                     if (prop.PropertyType == typeof(LayoutOptions))
                     {
@@ -108,6 +160,24 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                             loConverter = new LayoutOptionsConverter();
                         }
                         var op = (LayoutOptions)loConverter.ConvertFromInvariantString(attr.Value);
+                        prop.SetValue(obj, op);
+                    }
+                    else if (prop.PropertyType == typeof(GridLength))
+                    {
+                        if (gridLConverter == null)
+                        {
+                            gridLConverter = new GridLengthTypeConverter();
+                        }
+                        var op = (GridLength)gridLConverter.ConvertFromInvariantString(attr.Value);
+                        prop.SetValue(obj, op);
+                    }
+                    else if (prop.PropertyType == typeof(Color))
+                    {
+                        if (colorConverter == null)
+                        {
+                            colorConverter = new ColorTypeConverter();
+                        }
+                        var op = (Color)colorConverter.ConvertFromInvariantString(attr.Value);
                         prop.SetValue(obj, op);
                     }
                     else if (prop.PropertyType == typeof(Thickness))

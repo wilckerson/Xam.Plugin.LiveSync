@@ -12,6 +12,7 @@ namespace XamarinFormsLiveSync
         public MainPage()
         {
             InitializeComponent();
+            
         }
     }
 }
