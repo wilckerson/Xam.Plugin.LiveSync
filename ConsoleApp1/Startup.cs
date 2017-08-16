@@ -35,7 +35,7 @@ namespace XamarinFormsLiveSync.Server
             }
 
             FileSystemWatcher watcher = new FileSystemWatcher();
-            watcher.Path = "C://Projetos//LiveSyncServer//watch";
+            watcher.Path = "C://Projetos//XamarinFormsLiveSync//XamarinFormsLiveSync//XamarinFormsLiveSync";
             watcher.NotifyFilter = NotifyFilters.LastWrite;
             watcher.Filter = "*.*";
             watcher.Changed += new FileSystemEventHandler(OnChanged);
@@ -80,7 +80,20 @@ namespace XamarinFormsLiveSync.Server
         {
             if (e.ChangeType == WatcherChangeTypes.Changed)
             {
-                var textContent = GetFileContent(e.FullPath);
+                var path = e.FullPath;
+                
+                if (path.EndsWith("TMP"))
+                {
+                    var idx = path.LastIndexOf('~');
+                    var newPath = path.Substring(0, idx);
+                    path = newPath;
+                }
+
+                if (!path.EndsWith(".xaml")) { return; }
+
+                var textContent = GetFileContent(path);
+
+                if (string.IsNullOrEmpty(textContent)) { return; }
 
                 string data = $"{e.Name}\r{textContent}";
                 await _webSocketHandler.SendMessageToAllAsync(data);
@@ -90,34 +103,45 @@ namespace XamarinFormsLiveSync.Server
 
         string GetFileContent(string path)
         {
-            using (Stream stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            try
             {
-                var encoding = GetEncoding(stream);
 
-                /* 
-                                MemoryStream convertedStream = new MemoryStream();
 
-                                if (encoding != Encoding.UTF8)
-                                {
-                                    MemoryStream mStream = new MemoryStream();
-                                    stream.CopyTo(mStream);
-                                    var convertedBytes = Encoding.Convert(encoding, Encoding.UTF8, mStream.ToArray());
-                                    convertedStream.Write(convertedBytes, 0, convertedBytes.Length);
-                                    convertedStream.Seek(0, SeekOrigin.Begin);
 
-                                }
-                                else
-                                {
-                                    stream.CopyTo(convertedStream);
-                                    convertedStream.Seek(0, SeekOrigin.Begin);
-                                }
-                                */
-
-                using (StreamReader streamReader = new StreamReader(stream, encoding))
+                using (Stream stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    string textContent = streamReader.ReadToEnd();
-                    return textContent;
+                    var encoding = GetEncoding(stream);
+
+                    /* 
+                                    MemoryStream convertedStream = new MemoryStream();
+
+                                    if (encoding != Encoding.UTF8)
+                                    {
+                                        MemoryStream mStream = new MemoryStream();
+                                        stream.CopyTo(mStream);
+                                        var convertedBytes = Encoding.Convert(encoding, Encoding.UTF8, mStream.ToArray());
+                                        convertedStream.Write(convertedBytes, 0, convertedBytes.Length);
+                                        convertedStream.Seek(0, SeekOrigin.Begin);
+
+                                    }
+                                    else
+                                    {
+                                        stream.CopyTo(convertedStream);
+                                        convertedStream.Seek(0, SeekOrigin.Begin);
+                                    }
+                                    */
+
+                    using (StreamReader streamReader = new StreamReader(stream, encoding))
+                    {
+                        string textContent = streamReader.ReadToEnd();
+                        return textContent;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return "";
             }
         }
 

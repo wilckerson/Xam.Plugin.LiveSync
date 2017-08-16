@@ -20,7 +20,11 @@ namespace XamarinFormsLiveSync.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            Websockets.Droid.WebsocketConnection.Link();
+
             LoadApplication(new App());
+          
         }
     }
 }

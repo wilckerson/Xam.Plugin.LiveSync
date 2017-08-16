@@ -14,6 +14,26 @@ namespace XamarinFormsLiveSync
             InitializeComponent();
 
             MainPage = new XamarinFormsLiveSync.MainPage();
+
+            ListenToLiveSyncServer();
+        }
+
+        private void ListenToLiveSyncServer()
+        {
+            var connection = Websockets.WebSocketFactory.Create();
+            connection.Open("http://192.168.0.11:5000");
+            connection.OnOpened += WebSocket_OnOpened;
+            connection.OnMessage += WebSocket_OnMessage;
+        }
+
+        private void WebSocket_OnOpened()
+        {
+            
+        }
+
+        private void WebSocket_OnMessage(string obj)
+        {
+            
         }
 
         protected override void OnStart()
