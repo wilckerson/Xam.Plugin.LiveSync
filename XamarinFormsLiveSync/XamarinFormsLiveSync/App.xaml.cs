@@ -13,9 +13,14 @@ namespace XamarinFormsLiveSync
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage());
+            var page = new MainPage();
+            MainPage = page;
+            //MainPage = new NavigationPage(new MainPage());
 
-            ListenToLiveSyncServer();
+            var newContent = ParseXamlToView("");
+            page.Content = newContent;
+
+            //ListenToLiveSyncServer();
         }
 
         private void ListenToLiveSyncServer()
