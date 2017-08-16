@@ -90,6 +90,7 @@ namespace XamarinFormsLiveSync.Server
                 }
 
                 if (!path.EndsWith(".xaml")) { return; }
+                await Task.Delay(1000);
 
                 var textContent = GetFileContent(path);
 

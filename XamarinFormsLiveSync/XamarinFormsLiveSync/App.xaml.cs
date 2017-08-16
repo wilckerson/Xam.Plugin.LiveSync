@@ -18,10 +18,11 @@ namespace XamarinFormsLiveSync
             MainPage = page;
             //MainPage = new NavigationPage(new MainPage());
             
-            var newContent = XamlParser.ParseXamlToView(SampleXaml2);
-            page.Content = newContent;
+            //var newContent = XamlParser.ParseXamlAndGetContentView(SampleXaml2);
+            //page.Content = newContent;
+           
 
-            //ListenToLiveSyncServer();
+            ListenToLiveSyncServer();
         }
 
         private void ListenToLiveSyncServer()
@@ -71,7 +72,7 @@ namespace XamarinFormsLiveSync
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        var newContent = ParseXamlToView(fileContent);
+                        var newContent = XamlParser.ParseXamlAndGetContentView(fileContent);
                         (page as ContentPage).Content = newContent;
                     });
                 }
@@ -83,7 +84,7 @@ namespace XamarinFormsLiveSync
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        var newContent = ParseXamlToView(fileContent);
+                        var newContent = XamlParser.ParseXamlAndGetContentView(fileContent);
                         (page as ContentView).Content = newContent;
                     });
                 }

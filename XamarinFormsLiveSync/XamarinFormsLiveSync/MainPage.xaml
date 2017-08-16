@@ -3,9 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:XamarinFormsLiveSync"
              x:Class="XamarinFormsLiveSync.MainPage">
-
-	<Label Text="Welcome to Xamarin Forms 4!" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" />
-
+    <StackLayout>
+        <Label Text="bla bla bal"/>
+        <Entry/>
+        <Button Text="huehueh4" HorizontalOptions="Start"></Button>
+        <Label Text="Wilckerson Ganda LiveSync Uau!"
+               TextColor="Red"
+               VerticalOptions="Center" 
+               HorizontalOptions="Center" />
+    </StackLayout>
 </ContentPage>

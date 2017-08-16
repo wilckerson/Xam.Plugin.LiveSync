@@ -9,15 +9,34 @@ namespace XamarinFormsLiveSync.Core.XamlParser
 {
     public class XamlParser
     {
-        public static View ParseXamlToView(string xaml) {
+        public static View ParseXamlAndGetContentView(string xaml)
+        {
+            var viewObj = ParseXamlToViewObject(xaml);
+            if (viewObj is ContentPage)
+            {
+                var content = (viewObj as ContentPage).Content;
+                return content;
+            }
+            else if(viewObj is ContentView)
+            {
+                var content = (viewObj as ContentView).Content;
+                return content;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static object ParseXamlToViewObject(string xaml) {
 
             XamlAstParser astParser = new XamlAstParser();
             var rootNode = astParser.ExtractAst(xaml);
 
             XamlAstBuilder astBuilder = new XamlAstBuilder();
-            var viewRoot = astBuilder.Build(rootNode);
+            var viewObj = astBuilder.BuildNode(rootNode);
 
-            return viewRoot;
+            return viewObj;
         }
     }
 }
