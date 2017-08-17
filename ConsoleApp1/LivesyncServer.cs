@@ -61,6 +61,17 @@ namespace XamarinFormsLiveSync.Server
         {
             if (e.ChangeType == WatcherChangeTypes.Changed)
             {
+                var path = e.FullPath;
+
+                if (path.EndsWith("TMP"))
+                {
+                    var idx = path.LastIndexOf('~');
+                    var newPath = path.Substring(0, idx);
+                    path = newPath;
+                }
+
+                if (!path.EndsWith(".xaml")) { return; }
+
                 //------------------------------------------------------------
                 //O evento OnChange está sendo chamado duas vezes sempre que 
                 //altera o arquivo. A logica abaixo, desconsidera a segunda 
@@ -74,16 +85,7 @@ namespace XamarinFormsLiveSync.Server
                 nextProcess = dtNow.AddSeconds(3);
                 //---------------------------------------------
 
-                var path = e.FullPath;
 
-                if (path.EndsWith("TMP"))
-                {
-                    var idx = path.LastIndexOf('~');
-                    var newPath = path.Substring(0, idx);
-                    path = newPath;
-                }
-
-                if (!path.EndsWith(".xaml")) { return; }
                 await Task.Delay(700); //Necessário para evitar a exception "Esse arquivo está sendo usado por outro processo."
 
                 var textContent = FileHelper.GetFileContent(path);
