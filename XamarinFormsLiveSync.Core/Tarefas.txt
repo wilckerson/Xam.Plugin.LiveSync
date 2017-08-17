@@ -1,6 +1,6 @@
 ﻿OK Binding basico
 OK Binding com stringFormat
-CustomControl
+OK CustomControl
 Isolar código do websocket no Core
 Melhorar isolamento e configuração de uso
 Completar suporte a tipos de propriedades

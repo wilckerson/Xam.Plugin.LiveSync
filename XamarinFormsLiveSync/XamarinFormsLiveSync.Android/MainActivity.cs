@@ -22,6 +22,7 @@ namespace XamarinFormsLiveSync.Droid
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
             Websockets.Droid.WebsocketConnection.Link();
+            SegmentedControl.FormsPlugin.Android.SegmentedControlRenderer.Init();
 
             LoadApplication(new App());
           

@@ -26,8 +26,27 @@ namespace XamarinFormsLiveSync.Core.XamlParser
             //TODO: node.Namespace
             if (node == null) return null;
 
-            var assemblyQualifiedName = defaultAssemblyQualifiedName.Replace("ContentPage", node.Name);
-            var type = Type.GetType(assemblyQualifiedName);
+            Type type = null;
+            if (!string.IsNullOrEmpty(node.Namespace) && node.Namespace.Trim().StartsWith("clr-namespace"))
+            {
+                var parts = node.Namespace.Split(';');
+                var usingNamespace = parts[0].Replace("clr-namespace:", string.Empty).Trim();
+                var assembly = parts.ElementAtOrDefault(1)?.Replace("assembly=", string.Empty).Trim();
+
+                if (string.IsNullOrEmpty(assembly))
+                {
+                    assembly = usingNamespace;
+                }
+
+                var assemblyQualifiedName = $"{usingNamespace}.{node.Name}, {assembly}";
+
+                type = Type.GetType(assemblyQualifiedName);
+            }
+            else
+            {
+                var assemblyQualifiedName = defaultAssemblyQualifiedName.Replace("ContentPage", node.Name);
+                type = Type.GetType(assemblyQualifiedName);
+            }
 
             if (type == null) return null;
 
@@ -62,8 +81,11 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                         foreach (var children in node.Childrens)
                         {
                             var subObj = BuildNode(children);
-                            var layout = (IList<View>)prop2Children.GetValue(obj);
-                            layout.Add((subObj as View));
+                            if (subObj != null)
+                            {
+                                var layout = (IList<View>)prop2Children.GetValue(obj);
+                                layout.Add((subObj as View));
+                            }
                         }
                     }
                     else

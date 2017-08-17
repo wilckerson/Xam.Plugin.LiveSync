@@ -2,25 +2,27 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:XamarinFormsLiveSync"
+              xmlns:seg="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions"
              x:Class="XamarinFormsLiveSync.MainPage">
 
-    <!--<Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-        
-        <Button Grid.Column="0" Text="lkjdlkjsalkdj" BackgroundColor="Blue" TextColor="Aqua"/>
-
-        <Label Grid.Column="1" Text="llll"/>
-    </Grid>-->
-    
     <StackLayout>
 
+        
+        <!--<seg:SegmentedControl x:Name="SegControl" TintColor="#007AFF" SelectedSegment="0">
+            <seg:SegmentedControl.Children>
+                <seg:SegmentedControlOption Text="Tab 1" />
+                <seg:SegmentedControlOption Text="Tab 2" />
+                <seg:SegmentedControlOption Text="Tab 3" />
+                <seg:SegmentedControlOption Text="Tab 4" />
+            </seg:SegmentedControl.Children>
+        </seg:SegmentedControl>-->
+        
         <Label Text="{Binding Prop, StringFormat='format: {0}'}"
                TextColor="Red"
                VerticalOptions="Center" 
                HorizontalOptions="Center" />
+        
+        <local:CustomControl HorizontalOptions="Start"/>
 
         <Button Text="{Binding Prop }" HorizontalOptions="Start"/>
     </StackLayout>

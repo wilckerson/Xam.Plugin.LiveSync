@@ -72,8 +72,16 @@ namespace XamarinFormsLiveSync
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        var newContent = XamlParser.ParseXamlAndGetContentView(fileContent);
-                        (page as ContentPage).Content = newContent;
+                        try
+                        {
+                            var newContent = XamlParser.ParseXamlAndGetContentView(fileContent);
+                            (page as ContentPage).Content = newContent;
+                        }
+                        catch (Exception ex)
+                        {
+                            
+                        }
+                      
                     });
                 }
             }
