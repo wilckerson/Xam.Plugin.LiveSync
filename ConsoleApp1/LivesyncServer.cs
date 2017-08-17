@@ -42,7 +42,7 @@ namespace XamarinFormsLiveSync.Server
             //var port = Program.PORT; //"5000";// http.Connection.LocalPort;
 
             string host = $"http://{ipAddress}:{PORT}";
-            DisplayMessage = $"Xamarin Forms LivesyncServer connected at: {host}";
+            DisplayMessage = $"Xamarin Forms LivesyncServer connected at: {host} and watching the directory: {watcherPath}";
             Console.WriteLine(DisplayMessage);
         }
 

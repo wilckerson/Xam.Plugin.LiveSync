@@ -36,8 +36,8 @@ namespace XamarinFormsLiveSync.Server
                 app.UseDeveloperExceptionPage();
             }
             
-            string path = "C://Projetos//XamarinFormsLiveSync//XamarinFormsLiveSync//XamarinFormsLiveSync";
-            var livesyncServer = new LivesyncServer(path);
+            //string path = "C://Projetos//XamarinFormsLiveSync//XamarinFormsLiveSync//XamarinFormsLiveSync";
+            var livesyncServer = new LivesyncServer(Program.PATH_TO_WATCH);
             
             app.UseWebSockets();
             app.Use(async (http, next) =>
@@ -49,7 +49,8 @@ namespace XamarinFormsLiveSync.Server
                 }
                 
                 await http.Response.WriteAsync(livesyncServer.DisplayMessage);
-                await next();
+                return;
+                //await next();
             });
         }
 
