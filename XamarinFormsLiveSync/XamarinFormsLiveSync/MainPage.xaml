@@ -22,7 +22,7 @@
                VerticalOptions="Center" 
                HorizontalOptions="Center" />
         
-        <local:CustomControl HorizontalOptions="Start"/>
+        <local:CustomControl HorizontalOptions="End"/>
 
         <Button Text="{Binding Prop }" HorizontalOptions="Start"/>
     </StackLayout>

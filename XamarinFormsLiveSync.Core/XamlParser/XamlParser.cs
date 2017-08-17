@@ -38,5 +38,7 @@ namespace XamarinFormsLiveSync.Core.XamlParser
 
             return viewObj;
         }
+
+      
     }
 }

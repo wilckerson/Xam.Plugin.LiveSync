@@ -132,6 +132,10 @@
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\XamarinFormsLiveSync.Core\XamarinFormsLiveSync.Core.csproj">
+      <Project>{7289A3D4-0902-4C16-A39D-28DD946839FD}</Project>
+      <Name>XamarinFormsLiveSync.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XamarinFormsLiveSync\XamarinFormsLiveSync.csproj">
       <Project>{552b7789-073d-4f07-a162-5d744cb8a745}</Project>
       <Name>XamarinFormsLiveSync</Name>

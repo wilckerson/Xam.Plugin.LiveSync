@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using XamarinFormsLiveSync.Core;
 
 namespace XamarinFormsLiveSync.Droid
 {
@@ -22,6 +23,8 @@ namespace XamarinFormsLiveSync.Droid
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
             Websockets.Droid.WebsocketConnection.Link();
+            XamlLiveSyncServer.Init("http://192.168.0.11:5000");
+
             SegmentedControl.FormsPlugin.Android.SegmentedControlRenderer.Init();
 
             LoadApplication(new App());
