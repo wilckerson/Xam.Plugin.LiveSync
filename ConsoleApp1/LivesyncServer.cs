@@ -14,10 +14,12 @@ namespace XamarinFormsLiveSync.Server
 {
     public class LivesyncServer
     {
-        public static int PORT = 5000;
+        public static int PORT = 1618;
         FileSystemWatcher watcher;
         string watcherPath;
         MyWebSocketHandler webSocketHandler;
+        DateTime nextProcess;
+
         public string DisplayMessage { get; private set; }
 
         public LivesyncServer(string path)
@@ -27,6 +29,7 @@ namespace XamarinFormsLiveSync.Server
             ConfigureWatcher();
 
             webSocketHandler = new MyWebSocketHandler();
+            nextProcess = DateTime.Now;
         }
 
         private async void DisplayHost()
@@ -47,6 +50,7 @@ namespace XamarinFormsLiveSync.Server
         {
             watcher = new FileSystemWatcher();
             watcher.Path = watcherPath;
+            watcher.IncludeSubdirectories = true;
             watcher.NotifyFilter = NotifyFilters.LastWrite;
             watcher.Filter = "*.*";
             watcher.Changed += new FileSystemEventHandler(OnChanged);
@@ -57,6 +61,19 @@ namespace XamarinFormsLiveSync.Server
         {
             if (e.ChangeType == WatcherChangeTypes.Changed)
             {
+                //------------------------------------------------------------
+                //O evento OnChange está sendo chamado duas vezes sempre que 
+                //altera o arquivo. A logica abaixo, desconsidera a segunda 
+                //chamada caso ocorra em até 3 segundos
+                //
+                var dtNow = DateTime.Now;
+                if (dtNow < nextProcess)
+                {
+                    return;
+                }
+                nextProcess = dtNow.AddSeconds(3);
+                //---------------------------------------------
+
                 var path = e.FullPath;
 
                 if (path.EndsWith("TMP"))
@@ -75,6 +92,8 @@ namespace XamarinFormsLiveSync.Server
 
                 var lastIdx = path.LastIndexOf('\\');
                 string name = path.Substring(lastIdx + 1);
+
+                Console.WriteLine($"{DateTime.Now}: Changes at file {name}. Sending to app...");
 
                 string data = $"{name}_ENDNAME_{textContent}";
                 await webSocketHandler.SendMessageToAllAsync(data);
