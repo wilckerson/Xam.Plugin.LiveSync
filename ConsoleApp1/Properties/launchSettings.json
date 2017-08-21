@@ -2,7 +2,7 @@
   "profiles": {
     "XamarinFormsLiveSync.Server": {
       "commandName": "Project",
-      "commandLineArgs": "--path C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync"
+      "commandLineArgs": "--path \"C:\\Users\\Wilckerson Ganda\\Documents\\Visual Studio 2017\\Projects\\App6\\App6\""
     }
   }
 }

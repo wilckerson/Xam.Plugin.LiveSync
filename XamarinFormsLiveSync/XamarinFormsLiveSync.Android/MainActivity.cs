@@ -22,8 +22,9 @@ namespace XamarinFormsLiveSync.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
+            //XamarinLivesync
             Websockets.Droid.WebsocketConnection.Link();
-            XamlLiveSyncServer.Init("http://192.168.0.11:8161");
+            XamarinFormsLiveSync.Core.XamlLiveSyncServer.Init("http://192.168.0.11:8161");
 
             SegmentedControl.FormsPlugin.Android.SegmentedControlRenderer.Init();
 

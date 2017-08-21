@@ -66,16 +66,7 @@ namespace XamarinFormsLiveSync.Core
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        try
-                        {
-                            var newContent = XamlParser.XamlParser.ParseXamlAndGetContentView(page, fileContent);
-                            (page as ContentPage).Content = newContent;
-                        }
-                        catch (Exception ex)
-                        {
-
-                        }
-
+                       XamlParser.XamlParser.ApplyXamlToPage((page as ContentPage), fileContent);  
                     });
                 }
             }
@@ -86,8 +77,7 @@ namespace XamarinFormsLiveSync.Core
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        var newContent = XamlParser.XamlParser.ParseXamlAndGetContentView(page, fileContent);
-                        (page as ContentView).Content = newContent;
+                        XamlParser.XamlParser.ApplyXamlToContentView((page as ContentView), fileContent);
                     });
                 }
             }
@@ -99,31 +89,19 @@ namespace XamarinFormsLiveSync.Core
             }
             else if (page is MasterDetailPage)
             {
-                var masterName = (page as MasterDetailPage).Master.GetType().Name + ".xaml";
-                var detailsName = (page as MasterDetailPage).Detail.GetType().Name + ".xaml";
+                    var subPageMaster = (page as MasterDetailPage).Master;
+                    var subPageDetail = (page as MasterDetailPage).Detail;
 
-                if (fileName == masterName)
-                {
-                    var subPage = (page as MasterDetailPage).Master;
-                    UpdateViewContent(subPage, fileName, fileContent);
+                    UpdateViewContent(subPageMaster, fileName, fileContent);
+                    UpdateViewContent(subPageDetail, fileName, fileContent);
                     return;
-                }
-                else if (fileName == detailsName)
-                {
-                    var subPage = (page as MasterDetailPage).Detail;
-                    UpdateViewContent(subPage, fileName, fileContent);
-                    return;
-                }
+                
             }
             else if (page is TabbedPage)
             {
-                pageName = (page as TabbedPage).CurrentPage.GetType().Name + ".xaml";
-                if (fileName == pageName)
-                {
-                    var subPage = (page as TabbedPage).CurrentPage;
-                    UpdateViewContent(subPage, fileName, fileContent);
-                    return;
-                }
+                var subPage = (page as TabbedPage).CurrentPage;
+                UpdateViewContent(subPage, fileName, fileContent);
+                return;
             }
         }
 

@@ -110,8 +110,7 @@ namespace XamarinFormsLiveSync.Server
                     webSocketHandler = new MyWebSocketHandler(sockets);
                     nextProcess = DateTime.Now;
 
-                    //Tenta enviar novamente a mensagem original
-                    await webSocketHandler.SendMessageToAllAsync(data);
+                    OnChanged(sender, e);
                 }
                
             }

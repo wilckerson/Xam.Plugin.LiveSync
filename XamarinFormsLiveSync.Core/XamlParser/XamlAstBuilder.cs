@@ -58,19 +58,19 @@ namespace XamarinFormsLiveSync.Core.XamlParser
             ApplyAttributes(type, obj, node);
             ApplyAttachedProperties(type, obj, node);
             ApplyElementProperties(type, obj, node);
-            ApplyChildrens(type, obj, node);
+            ApplyChildrens(type, obj, node.Childrens);
 
             return obj;
         }
 
-        void ApplyChildrens(Type type, object obj, AstNode node)
+        void ApplyChildrens(Type type, object obj, List<AstNode> childrens)
         {
-            if (node.Childrens.Count > 0)
+            if (childrens.Count > 0)
             {
                 var propChildren = type.GetTypeInfo().GetDeclaredProperty("Children");
                 if (propChildren != null)
                 {
-                    foreach (var children in node.Childrens)
+                    foreach (var children in childrens)
                     {
                         var subObj = BuildNode(children);
                         var layout = (IList<View>)propChildren.GetValue(obj);
@@ -82,7 +82,7 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                     var prop2Children = type.GetRuntimeProperty("Children");
                     if (prop2Children != null)
                     {
-                        foreach (var children in node.Childrens)
+                        foreach (var children in childrens)
                         {
                             var subObj = BuildNode(children);
                             if (subObj != null)
@@ -97,7 +97,7 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                         var propContent = type.GetRuntimeProperty("Content");
                         if (propContent != null)
                         {
-                            var subObj = BuildNode(node.Childrens.FirstOrDefault());
+                            var subObj = BuildNode(childrens.FirstOrDefault());
                             propContent.SetValue(obj, subObj);
                         }
                     }
@@ -109,12 +109,25 @@ namespace XamarinFormsLiveSync.Core.XamlParser
         {
             foreach (var elmProp in node.ElementProperties)
             {
+                if (elmProp.Key == "Content")
+                {
+                    ApplyChildrens(type, obj, elmProp.Value);
+                    continue;
+                }
+
                 var prop = type.GetRuntimeProperty(elmProp.Key);
+                var propTypeInfo = prop.PropertyType.GetTypeInfo();
 
                 foreach (var item in elmProp.Value)
                 {
                     var subObj = BuildNode(item);
-                    if (prop.PropertyType == typeof(ColumnDefinitionCollection))
+
+                    if (propTypeInfo.IsGenericType && propTypeInfo.GetGenericTypeDefinition() == typeof(IList<>))
+                    {
+                        var lst = (IList)prop.GetValue(obj);
+                        lst.Add(subObj);
+                    }
+                    else if (prop.PropertyType == typeof(ColumnDefinitionCollection))
                     {
                         var lst = (ColumnDefinitionCollection)prop.GetValue(obj);
                         lst.Add((subObj as ColumnDefinition));
@@ -169,12 +182,12 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                 {
                     //Eventos
                     var ev = type.GetRuntimeEvent(attr.Key);
-                    if(ev != null && rootPage != null)
+                    if (ev != null && rootPage != null)
                     {
                         var evMethod = rootPage.GetType().GetRuntimeMethods().FirstOrDefault(f => f.Name == attr.Value);
-                        if(evMethod != null)
+                        if (evMethod != null)
                         {
-                            var del = evMethod.CreateDelegate(ev.EventHandlerType,rootPage);
+                            var del = evMethod.CreateDelegate(ev.EventHandlerType, rootPage);
                             ev.AddEventHandler(obj, del);
                         }
                         continue;
@@ -182,13 +195,13 @@ namespace XamarinFormsLiveSync.Core.XamlParser
 
                     //Propriedades
                     var prop = type.GetRuntimeProperty(attr.Key);
-                    if(prop == null) { continue; }
+                    if (prop == null) { continue; }
                     var propTypeinfo = prop.PropertyType.GetTypeInfo();
-                   
+
                     //Propriedades com Binding
-                    if (attr.Value.StartsWith("{") && attr.Value.Contains("Binding"))
+                    if (attr.Value.StartsWith("{") && attr.Value.Contains("Binding") && obj is BindableObject)
                     {
-                        var bindingPath = attr.Value;                           
+                        var bindingPath = attr.Value;
 
                         string format = null;
                         if (bindingPath.ToLower().Contains("stringformat"))
@@ -206,15 +219,21 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                             .Trim();
 
                         var binding = new Binding(bindingPath, stringFormat: format);
-                        var fieldInfo = type.GetRuntimeField(attr.Key + "Property");
-
+                        var fieldInfo = TypeHelper.GetField(type,attr.Key + "Property");
+                        if (fieldInfo == null) { continue; }
 
                         BindableProperty bindProp = (BindableProperty)fieldInfo.GetValue(null);
-                        (obj as BindableObject).SetBinding(bindProp, binding);
+                        if (obj is Page){
+                            (rootPage as BindableObject).SetBinding(bindProp, binding);
+                        }
+                        else
+                        {
+                            (obj as BindableObject).SetBinding(bindProp, binding);
+                        }
 
                         continue;
                     }
-                   
+
                     //Enum
                     if (propTypeinfo.IsEnum)
                     {
@@ -222,7 +241,7 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                         prop.SetValue(obj, r);
                         continue;
                     }
-                    
+
                     //Propriedades com TypeConverter (Tipo + TypeConverter || Tipo + Converter)
                     if (prop.PropertyType.Namespace != "System") //Tipos primitivos não possuem Converter
                     {
@@ -254,19 +273,19 @@ namespace XamarinFormsLiveSync.Core.XamlParser
 
                     //TypeConverterAttribute
                     var typeConvertAttr = prop.CustomAttributes.FirstOrDefault(f => f.AttributeType == typeof(TypeConverterAttribute));
-                    if(typeConvertAttr != null)
+                    if (typeConvertAttr != null)
                     {
                         var convertType = typeConvertAttr.ConstructorArguments[0].Value as Type;
                         var converter = (TypeConverter)Activator.CreateInstance(convertType);
                         var v = converter.ConvertFromInvariantString(attr.Value);
                         prop.SetValue(obj, v);
                         continue;
-                    }                    
+                    }
 
                     //Outros
                     var convertedValue = Convert.ChangeType(attr.Value, prop.PropertyType);
-                        prop.SetValue(obj, convertedValue);
-                    
+                    prop.SetValue(obj, convertedValue);
+
                 }
                 catch (Exception ex)
                 {
