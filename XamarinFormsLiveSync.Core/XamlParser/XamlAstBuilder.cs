@@ -56,7 +56,8 @@ namespace XamarinFormsLiveSync.Core.XamlParser
 
             if (type == typeof(DataTemplate))
             {
-                var dataTemplate = new DataTemplate(() => {
+                var dataTemplate = new DataTemplate(() =>
+                {
 
                     var subObj = BuildNode(node.Childrens.FirstOrDefault());
                     return subObj;
@@ -81,7 +82,7 @@ namespace XamarinFormsLiveSync.Core.XamlParser
         void ApplyChildrens(Type type, object obj, List<AstNode> childrens)
         {
             if (childrens.Count > 0)
-            {               
+            {
 
                 var propChildren = type.GetTypeInfo().GetDeclaredProperty("Children");
                 if (propChildren != null)
@@ -153,9 +154,16 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                         var lst = (RowDefinitionCollection)prop.GetValue(obj);
                         lst.Add((subObj as RowDefinition));
                     }
-                    else if(prop.PropertyType == typeof(DataTemplate))
+                    else
                     {
-                        prop.SetValue(obj, subObj);
+                        try
+                        {
+                            prop.SetValue(obj, subObj);
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
                     }
                 }
 
@@ -239,11 +247,12 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                             .Trim();
 
                         var binding = new Binding(bindingPath, stringFormat: format);
-                        var fieldInfo = TypeHelper.GetField(type,attr.Key + "Property");
+                        var fieldInfo = TypeHelper.GetField(type, attr.Key + "Property");
                         if (fieldInfo == null) { continue; }
 
                         BindableProperty bindProp = (BindableProperty)fieldInfo.GetValue(null);
-                        if (obj is Page){
+                        if (obj is Page)
+                        {
                             (rootPage as BindableObject).SetBinding(bindProp, binding);
                         }
                         else
