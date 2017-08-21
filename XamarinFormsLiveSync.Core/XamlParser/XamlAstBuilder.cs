@@ -174,7 +174,7 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                         var evMethod = rootPage.GetType().GetRuntimeMethods().FirstOrDefault(f => f.Name == attr.Value);
                         if(evMethod != null)
                         {
-                            var del = evMethod.CreateDelegate(ev.EventHandlerType);
+                            var del = evMethod.CreateDelegate(ev.EventHandlerType,rootPage);
                             ev.AddEventHandler(obj, del);
                         }
                         continue;

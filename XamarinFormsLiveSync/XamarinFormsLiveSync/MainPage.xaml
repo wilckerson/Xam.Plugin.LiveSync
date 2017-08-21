@@ -25,7 +25,7 @@
         <!--<local:CustomControl HorizontalOptions="End" />-->
         <!--<Label Text="20099fd" Rotation="10" AnchorX="0" VerticalOptions="Center" HorizontalOptions="Center"/>-->
         <!--<Button Text="{Binding Prop }"  />-->         
-        <Button  Clicked="Button_Clicked" Text="Bt0j0000n29h" />
+        <Button  Clicked="Button_Clicked" Text="btn2" />
     </StackLayout>
     
     <!--<Grid BackgroundColor="#9E1521">

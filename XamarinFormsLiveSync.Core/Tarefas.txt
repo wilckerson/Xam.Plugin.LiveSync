@@ -3,5 +3,5 @@ OK Binding com stringFormat
 OK CustomControl
 OK Isolar código do websocket no Core
 OK Melhorar isolamento e configuração de uso
-Completar suporte a tipos de propriedades
+OK Melhorar suporte a tipos de propriedades
 Suportar Styles
