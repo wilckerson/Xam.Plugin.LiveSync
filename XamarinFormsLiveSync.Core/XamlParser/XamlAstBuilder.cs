@@ -263,6 +263,28 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                         continue;
                     }
 
+                    //StaticResource e DynamicResource
+                    if (attr.Value.StartsWith("{")
+                        && (attr.Value.Contains("StaticResource") || attr.Value.Contains("DynamicResource")))
+                    {
+                        var resourcePath = attr.Value.Replace("{", string.Empty)
+                            .Replace("}", string.Empty)
+                            .Replace("StaticResource", string.Empty)
+                            .Replace("DynamicResource", string.Empty)
+                            .Trim();
+
+                        //Busca o estilo na pagina
+                        if ((rootPage as VisualElement).Resources.TryGetValue(resourcePath, out object pageResourceValue))
+                        {
+                            prop.SetValue(obj, pageResourceValue);
+                        }
+                        //Caso contrário busca o estilo global
+                        else if (Application.Current.Resources.TryGetValue(resourcePath, out object resourceValue))
+                        {
+                            prop.SetValue(obj, resourceValue);
+                        }
+                    }
+
                     //Enum
                     if (propTypeinfo.IsEnum)
                     {
@@ -290,13 +312,6 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                             var v = typeConverter.ConvertFromInvariantString(attr.Value);
                             prop.SetValue(obj, v);
                             continue;
-                            //var method = converterType.GetTypeInfo().GetDeclaredMethod("ConvertFromInvariantString");
-                            //if (method != null)
-                            //{
-                            //    var r = method.Invoke(typeConverter, new object[] { attr.Value });
-                            //    prop.SetValue(obj, r);
-                            //    continue;
-                            //}
                         }
                     }
 
