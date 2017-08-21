@@ -10,15 +10,19 @@ namespace XamarinFormsLiveSync.Core.XamlParser
     internal class XamlAstBuilder
     {
         string defaultAssemblyQualifiedName;
+        string defaultConverterAssemblyQualifiedName;
         LayoutOptionsConverter loConverter = null;
         ThicknessTypeConverter thicknessConverter = null;
         ColorTypeConverter colorConverter = null;
         GridLengthTypeConverter gridLConverter = null;
+        object rootPage;
 
-        public XamlAstBuilder()
+        public XamlAstBuilder(object rootPage)
         {
             //Obtendo o assemblyQualifiedName padrão
+            this.rootPage = rootPage;
             defaultAssemblyQualifiedName = new ContentPage().GetType().AssemblyQualifiedName;
+            defaultConverterAssemblyQualifiedName = new LayoutOptionsConverter().GetType().AssemblyQualifiedName;
         }
 
         public object BuildNode(AstNode node)
@@ -163,18 +167,25 @@ namespace XamarinFormsLiveSync.Core.XamlParser
             {
                 try
                 {
+                    //Eventos
+                    var ev = type.GetRuntimeEvent(attr.Key);
+                    if(ev != null && rootPage != null)
+                    {
+                        var evMethod = rootPage.GetType().GetRuntimeMethods().FirstOrDefault(f => f.Name == attr.Value);
+                        if(evMethod != null)
+                        {
+                            var del = evMethod.CreateDelegate(ev.EventHandlerType);
+                            ev.AddEventHandler(obj, del);
+                        }
+                        continue;
+                    }
+
+                    //Propriedades
                     var prop = type.GetRuntimeProperty(attr.Key);
-
-                    //Verificando se a propriedade possui um TypeConverter
-                    //var typeConvertAttr = prop.CustomAttributes.FirstOrDefault(f => f.AttributeType == typeof(TypeConverterAttribute));
-                    //if(typeConvertAttr != null)
-                    //{
-                    //    var convertType = typeConvertAttr.ConstructorArguments[0].Value as Type;
-                    //    var converter = (TypeConverter)Activator.CreateInstance(convertType);
-                    //    var v = converter.ConvertFromInvariantString(attr.Value);
-                    //    prop.SetValue(obj, v);
-                    //}
-
+                    if(prop == null) { continue; }
+                    var propTypeinfo = prop.PropertyType.GetTypeInfo();
+                   
+                    //Propriedades com Binding
                     if (attr.Value.StartsWith("{") && attr.Value.Contains("Binding"))
                     {
                         var bindingPath = attr.Value;                           
@@ -203,57 +214,59 @@ namespace XamarinFormsLiveSync.Core.XamlParser
 
                         continue;
                     }
+                   
+                    //Enum
+                    if (propTypeinfo.IsEnum)
+                    {
+                        var r = Enum.Parse(prop.PropertyType, attr.Value);
+                        prop.SetValue(obj, r);
+                        continue;
+                    }
+                    
+                    //Propriedades com TypeConverter (Tipo + TypeConverter || Tipo + Converter)
+                    if (prop.PropertyType.Namespace != "System") //Tipos primitivos não possuem Converter
+                    {
+                        string typeConverterName = $"{prop.PropertyType.Name}TypeConverter";
+                        var assemblyQualifiedName = defaultConverterAssemblyQualifiedName.Replace("LayoutOptionsConverter", typeConverterName);
+                        var converterType = Type.GetType(assemblyQualifiedName);
+                        if (converterType == null)
+                        {
+                            string typeConverterName2 = $"{prop.PropertyType.Name}Converter";
+                            var assemblyQualifiedName2 = defaultConverterAssemblyQualifiedName.Replace("LayoutOptionsConverter", typeConverterName2);
+                            converterType = Type.GetType(assemblyQualifiedName2);
+                        }
 
-                    if (prop.PropertyType == typeof(LayoutOptions))
-                    {
-                        if (loConverter == null)
+                        if (converterType != null)
                         {
-                            loConverter = new LayoutOptionsConverter();
-                        }
-                        var op = (LayoutOptions)loConverter.ConvertFromInvariantString(attr.Value);
-                        prop.SetValue(obj, op);
-                    }
-                    else if (prop.PropertyType == typeof(GridLength))
-                    {
-                        if (gridLConverter == null)
-                        {
-                            gridLConverter = new GridLengthTypeConverter();
-                        }
-                        var op = (GridLength)gridLConverter.ConvertFromInvariantString(attr.Value);
-                        prop.SetValue(obj, op);
-                    }
-                    else if (prop.PropertyType == typeof(Color))
-                    {
-                        if (colorConverter == null)
-                        {
-                            colorConverter = new ColorTypeConverter();
-                        }
-                        var op = (Color)colorConverter.ConvertFromInvariantString(attr.Value);
-                        prop.SetValue(obj, op);
-                    }
-                    else if (prop.PropertyType == typeof(Thickness))
-                    {
-                        if (attr.Value.Contains(","))
-                        {
-                            if (thicknessConverter == null)
-                            {
-                                thicknessConverter = new ThicknessTypeConverter();
-                            }
-                            var thickness = (LayoutOptions)thicknessConverter.ConvertFromInvariantString(attr.Value.Trim());
-                            prop.SetValue(obj, thickness);
-                        }
-                        else
-                        {
-                            var uniformSize = Convert.ToDouble(attr.Value);
-                            var thickness = new Thickness(uniformSize);
-                            prop.SetValue(obj, thickness);
+                            var typeConverter = (TypeConverter)Activator.CreateInstance(converterType);
+                            var v = typeConverter.ConvertFromInvariantString(attr.Value);
+                            prop.SetValue(obj, v);
+                            continue;
+                            //var method = converterType.GetTypeInfo().GetDeclaredMethod("ConvertFromInvariantString");
+                            //if (method != null)
+                            //{
+                            //    var r = method.Invoke(typeConverter, new object[] { attr.Value });
+                            //    prop.SetValue(obj, r);
+                            //    continue;
+                            //}
                         }
                     }
-                    else
+
+                    //TypeConverterAttribute
+                    var typeConvertAttr = prop.CustomAttributes.FirstOrDefault(f => f.AttributeType == typeof(TypeConverterAttribute));
+                    if(typeConvertAttr != null)
                     {
-                        var convertedValue = Convert.ChangeType(attr.Value, prop.PropertyType);
+                        var convertType = typeConvertAttr.ConstructorArguments[0].Value as Type;
+                        var converter = (TypeConverter)Activator.CreateInstance(convertType);
+                        var v = converter.ConvertFromInvariantString(attr.Value);
+                        prop.SetValue(obj, v);
+                        continue;
+                    }                    
+
+                    //Outros
+                    var convertedValue = Convert.ChangeType(attr.Value, prop.PropertyType);
                         prop.SetValue(obj, convertedValue);
-                    }
+                    
                 }
                 catch (Exception ex)
                 {

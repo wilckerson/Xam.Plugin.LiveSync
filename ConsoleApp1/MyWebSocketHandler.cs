@@ -13,8 +13,15 @@ namespace XamarinFormsLiveSync.Server
     {
         private Dictionary<Guid, WebSocket> _sockets = new Dictionary<Guid, WebSocket>();
 
+        public IDictionary<Guid, WebSocket> Sockets { get { return _sockets; } }
+
         public MyWebSocketHandler()
         {
+        }
+
+        public MyWebSocketHandler(IDictionary<Guid, WebSocket>  sockets)
+        {
+            this._sockets = new Dictionary<Guid, WebSocket>(sockets);
         }
 
         public void OnConnected(WebSocket socket)

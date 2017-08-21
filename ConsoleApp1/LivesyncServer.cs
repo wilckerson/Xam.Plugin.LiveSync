@@ -14,7 +14,7 @@ namespace XamarinFormsLiveSync.Server
 {
     public class LivesyncServer
     {
-        public static int PORT = 1618;
+        public static int PORT = 8161;
         FileSystemWatcher watcher;
         string watcherPath;
         MyWebSocketHandler webSocketHandler;
@@ -98,7 +98,22 @@ namespace XamarinFormsLiveSync.Server
                 Console.WriteLine($"{DateTime.Now}: Changes at file {name}. Sending to app...");
 
                 string data = $"{name}_ENDNAME_{textContent}";
-                await webSocketHandler.SendMessageToAllAsync(data);
+                try
+                {
+                    await webSocketHandler.SendMessageToAllAsync(data);
+                }
+                catch (Exception ex)
+                //catch (System.ObjectDisposedException ex)
+                {
+                    //Se der algum erro, reinicia o Socket mantendo as conexoes abertas
+                    var sockets = webSocketHandler.Sockets;
+                    webSocketHandler = new MyWebSocketHandler(sockets);
+                    nextProcess = DateTime.Now;
+
+                    //Tenta enviar novamente a mensagem original
+                    await webSocketHandler.SendMessageToAllAsync(data);
+                }
+               
             }
         }
 

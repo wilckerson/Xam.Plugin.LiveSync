@@ -43,5 +43,10 @@ namespace XamarinFormsLiveSync
 
             //vm.Prop = "xxxxx";
         }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            DisplayAlert("Title", "Message", "Cancel");
+        }
     }
 }

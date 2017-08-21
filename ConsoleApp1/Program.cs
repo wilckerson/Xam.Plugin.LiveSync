@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using System;
+using System.Linq;
 using System.IO;
 
 namespace XamarinFormsLiveSync.Server
@@ -7,22 +8,40 @@ namespace XamarinFormsLiveSync.Server
     class Program
     {
         public static string PATH_TO_WATCH;
+        public static int PORT;
 
         static void Main(string[] args)
         {
             string currentDicrectory = Directory.GetCurrentDirectory();
             PATH_TO_WATCH = currentDicrectory;
-
-            if (args.Length > 1 && args[0] == "--path")
+            
+            for (int i = 0; i < args.Length; i++)
             {
-                var path = args[1];
-                PATH_TO_WATCH = path;
-
-                if (!Directory.Exists(path))
+                if (args[i] == "--path")
                 {
-                    Console.WriteLine($"Error: The directory {path} does not exist.");
-                    Console.ReadKey();
-                    return;
+                    var cmdArg = args.ElementAtOrDefault(i + 1);
+                    if (!string.IsNullOrEmpty(cmdArg) && !cmdArg.StartsWith("--"))
+                    {
+                        PATH_TO_WATCH = cmdArg;
+                        i++;
+
+                        if (!Directory.Exists(PATH_TO_WATCH))
+                        {
+                            Console.WriteLine($"Error: The directory {PATH_TO_WATCH} does not exist.");
+                            Console.ReadKey();
+                            return;
+                        }
+                    }
+                }
+                else if (args[i] == "--port")
+                {
+                    var cmdArg = args.ElementAtOrDefault(i + 1);
+                    if (!string.IsNullOrEmpty(cmdArg) && !cmdArg.StartsWith("--"))
+                    {
+                        int.TryParse(cmdArg, out int port);
+                        LivesyncServer.PORT = port;
+                        i++;
+                    }
                 }
             }
 
@@ -36,5 +55,6 @@ namespace XamarinFormsLiveSync.Server
 
             host.Run();
         }
+
     }
 }

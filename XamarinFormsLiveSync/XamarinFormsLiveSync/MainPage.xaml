@@ -7,7 +7,7 @@
 
     <StackLayout>
 
-
+ 
         <!--<seg:SegmentedControl x:Name="SegControl" TintColor="#007AFF" SelectedSegment="0">
             <seg:SegmentedControl.Children>
                 <seg:SegmentedControlOption Text="Tab 1" />
@@ -16,15 +16,16 @@
                 <seg:SegmentedControlOption Text="Tab 4" />
             </seg:SegmentedControl.Children>
         </seg:SegmentedControl>-->
-        
-        <Label Text="{Binding Prop, StringFormat='format: {0}'}"
+         
+        <!--<Label Text="{Binding Prop, StringFormat='format: {0}'}"
                TextColor="Red"
                VerticalOptions="Center" 
-               HorizontalOptions="Center" />
-        
-        <local:CustomControl HorizontalOptions="End"/>
-
-        <Button Text="{Binding Prop }" HorizontalOptions="Start"/>
+               HorizontalOptions="Center" />-->
+ 
+        <!--<local:CustomControl HorizontalOptions="End" />-->
+        <!--<Label Text="20099fd" Rotation="10" AnchorX="0" VerticalOptions="Center" HorizontalOptions="Center"/>-->
+        <!--<Button Text="{Binding Prop }"  />-->         
+        <Button  Clicked="Button_Clicked" Text="Bt0j0000n29h" />
     </StackLayout>
     
     <!--<Grid BackgroundColor="#9E1521">

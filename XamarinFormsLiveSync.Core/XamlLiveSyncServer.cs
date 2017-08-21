@@ -68,7 +68,7 @@ namespace XamarinFormsLiveSync.Core
                     {
                         try
                         {
-                            var newContent = XamlParser.XamlParser.ParseXamlAndGetContentView(fileContent);
+                            var newContent = XamlParser.XamlParser.ParseXamlAndGetContentView(page, fileContent);
                             (page as ContentPage).Content = newContent;
                         }
                         catch (Exception ex)
@@ -86,7 +86,7 @@ namespace XamarinFormsLiveSync.Core
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        var newContent = XamlParser.XamlParser.ParseXamlAndGetContentView(fileContent);
+                        var newContent = XamlParser.XamlParser.ParseXamlAndGetContentView(page, fileContent);
                         (page as ContentView).Content = newContent;
                     });
                 }
