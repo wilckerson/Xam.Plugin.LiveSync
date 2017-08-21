@@ -24,8 +24,9 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchArch>i386, x86_64</MtouchArch>
-    <MtouchLink>None</MtouchLink>
+    <MtouchLink>SdkOnly</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
+    <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -132,6 +133,25 @@
       <HintPath>..\..\packages\Xamarin.Forms.2.3.4.247\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="Websockets.Ios">
+      <HintPath>..\..\packages\Websockets.Pcl.1.1.9\lib\xamarinios10\Websockets.Ios.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSockets.PCL">
+      <HintPath>..\..\packages\Websockets.Pcl.1.1.9\lib\xamarinios10\WebSockets.PCL.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.SocketRocket">
+      <HintPath>..\..\packages\Square.SocketRocket.0.5.1\lib\Xamarin.iOS\Square.SocketRocket.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XamarinFormsLiveSync\XamarinFormsLiveSync.csproj">
+      <Project>{552B7789-073D-4F07-A162-5D744CB8A745}</Project>
+      <Name>XamarinFormsLiveSync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\XamarinFormsLiveSync.Core\XamarinFormsLiveSync.Core.csproj">
+      <Project>{7289A3D4-0902-4C16-A39D-28DD946839FD}</Project>
+      <Name>XamarinFormsLiveSync.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

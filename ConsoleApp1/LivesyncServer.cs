@@ -70,7 +70,7 @@ namespace XamarinFormsLiveSync.Server
                     path = newPath;
                 }
 
-                if (!path.EndsWith(".xaml")) { return; }
+                if (!path.EndsWith(".xaml") || path.Contains(".#")) { return; }
 
                 //------------------------------------------------------------
                 //O evento OnChange está sendo chamado duas vezes sempre que 
@@ -93,6 +93,9 @@ namespace XamarinFormsLiveSync.Server
                 if (string.IsNullOrEmpty(textContent)) { return; }
 
                 var lastIdx = path.LastIndexOf('\\');
+                if(lastIdx == -1){
+                    lastIdx = path.LastIndexOf('/');
+                }
                 string name = path.Substring(lastIdx + 1);
 
                 Console.WriteLine($"{DateTime.Now}: Changes at file {name}. Sending to app...");

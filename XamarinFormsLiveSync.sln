@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsLiveSync", "Xam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsLiveSync.iOS", "XamarinFormsLiveSync\XamarinFormsLiveSync.iOS\XamarinFormsLiveSync.iOS.csproj", "{EB6C70B8-160E-4EE2-AD3D-307B9BC0B872}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinFormsLiveSync.Server", "ConsoleApp1\XamarinFormsLiveSync.Server.csproj", "{8D15E055-41C8-419C-8AD8-5FCC65CA2527}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsLiveSync.Server", "ConsoleApp1\XamarinFormsLiveSync.Server.csproj", "{8D15E055-41C8-419C-8AD8-5FCC65CA2527}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsLiveSync.Core", "XamarinFormsLiveSync.Core\XamarinFormsLiveSync.Core.csproj", "{7289A3D4-0902-4C16-A39D-28DD946839FD}"
 EndProject
