@@ -54,6 +54,21 @@ namespace XamarinFormsLiveSync.Core.XamlParser
 
             if (type == null) return null;
 
+            if (type == typeof(DataTemplate))
+            {
+                var dataTemplate = new DataTemplate(() => {
+
+                    var subObj = BuildNode(node.Childrens.FirstOrDefault());
+                    return subObj;
+                });
+                return dataTemplate;
+            }
+            else if (type == typeof(ViewCell))
+            {
+                var subObj = BuildNode(node.Childrens.FirstOrDefault());
+                return new ViewCell() { View = (subObj as View) };
+            }
+
             var obj = Activator.CreateInstance(type);
             ApplyAttributes(type, obj, node);
             ApplyAttachedProperties(type, obj, node);
@@ -66,7 +81,8 @@ namespace XamarinFormsLiveSync.Core.XamlParser
         void ApplyChildrens(Type type, object obj, List<AstNode> childrens)
         {
             if (childrens.Count > 0)
-            {
+            {               
+
                 var propChildren = type.GetTypeInfo().GetDeclaredProperty("Children");
                 if (propChildren != null)
                 {
@@ -136,6 +152,10 @@ namespace XamarinFormsLiveSync.Core.XamlParser
                     {
                         var lst = (RowDefinitionCollection)prop.GetValue(obj);
                         lst.Add((subObj as RowDefinition));
+                    }
+                    else if(prop.PropertyType == typeof(DataTemplate))
+                    {
+                        prop.SetValue(obj, subObj);
                     }
                 }
 
