@@ -18,6 +18,7 @@ Android
 - Fazer o download e adicionar referência ao arquivo 'XamarinFormsLiveSync.Core.dll'
 
 iOS
+
 - Adicionar o pacote NuGet 'SocketRocket Web Sockets v.0.5.1'
 - Adicionar o pacote NuGet 'Websockets Portable v.1.1.9'
 - Fazer o download e adicionar referência ao arquivo 'XamarinFormsLiveSync.Core.dll'
