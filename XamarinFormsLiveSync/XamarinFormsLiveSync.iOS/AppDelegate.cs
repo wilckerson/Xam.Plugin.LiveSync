@@ -23,12 +23,12 @@ namespace XamarinFormsLiveSync.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new XamarinFormsLiveSync.App());
 
-			//XamarinLivesync
+            //XamarinLivesync
             Websockets.Ios.WebsocketConnection.Link();
-			XamarinFormsLiveSync.Core.XamlLiveSyncServer.Init("http://192.168.142.128:8161");
+            XamarinFormsLiveSync.Core.XamlLiveSyncServer.Init("http://192.168.142.128:8161");
 
+			LoadApplication(new XamarinFormsLiveSync.App());
             return base.FinishedLaunching(app, options);
         }
     }
