@@ -6,7 +6,7 @@ O XamarinFormsLiveSync é uma ferramenta gratuita e de código aberto que te per
 
 Ele funciona de dentro do seu aplicativo, suportando com isso quase tudo que sua aplicação possui, como StaticResources, CustomControls, CustomRenderers, etc.
 
-Com isso ele acaba trazendo melhores resultados se comparado com ferramentas similares como Gorila Player, Xamarin LivePlayer e o Visual Studio Xaml Preview.
+Essa abordagem traz melhores resultados se comparado com ferramentas similares como Gorilla Player, Xamarin LivePlayer ou o Visual Studio Xaml Preview.
 
 ## Como utilizar? ##
 
