@@ -1,4 +1,4 @@
-# README #
+# XamarinForms LiveSync (Preview)#
 
 Não perca mais tempo compilando sua aplicação para ver o resultado das suas alterações de interface XAML.
 
@@ -8,25 +8,27 @@ Ele funciona de dentro do seu aplicativo, suportando com isso quase tudo que sua
 
 Com isso ele acaba trazendo melhores resultados se comparado com ferramentas similares como Gorila Player, Xamarin LivePlayer e o Visual Studio Xaml Preview.
 
-### Como utilizar? ###
+## Como utilizar? ##
 
-1) Adicionar as bibliotecas necessárias de acordo com as plataformas
+### 1) Adicionar as bibliotecas necessárias de acordo com as plataformas ###
 
-Android:
+Android
+
 - Adicionar o pacote NuGet 'Websockets.Pcl v1.1.9'
 - Fazer o download e adicionar referência ao arquivo 'XamarinFormsLiveSync.Core.dll'
 
-iOS:
+iOS
+
 - Adicionar o pacote NuGet 'Websockets Portable v.1.1.9'
 - Fazer o download e adicionar referência ao arquivo 'XamarinFormsLiveSync.Core.dll'
 
-2) Chamar os códigos de inicialização.
+### 2) Chamar os códigos de inicialização ###
 
 Adicione o código abaixo de acordo com a plataforma, logo antes da linha que chama o método "LoadApplication"
 
 Android/MainActivity.cs:
  
-```C#
+```
 //... Xamarin.Forms.Forms.Init();
 
 //XamarinLivesync
@@ -38,7 +40,7 @@ XamarinFormsLiveSync.Core.XamlLiveSyncServer.Init("http://LOCAL_IP:PORT");
 
 iOS/AppDelegate.cs:
 
-```C#
+```
 //... Xamarin.Forms.Forms.Init();
 
 //XamarinLivesync
@@ -48,11 +50,15 @@ XamarinFormsLiveSync.Core.XamlLiveSyncServer.Init("http://LOCAL_IP:PORT");
 //... LoadApplication(...)
 ```
 
-3) Iniciar o servidor de sincronização
+### 3) Iniciar o servidor de sincronização ###
 
-Será necessário informar para o servidor de sincronização a caminho completo do projeto onde estão localizados os arquivos XAML. Geralmente é o caminho raiz do projeto PCL (Portable Class Library) que possui o arquivo App.xaml
+O servidor de sincronização é uma aplicação que roda no terminal que fica observando as mudanças que você faz nos arquivos *.xaml
 
-Atenção: Para rodar o servidor você precisará ter o .Net Core instalado na maquina. Para instalar [clique aqui](https://www.microsoft.com/net/download/core)
+Ao iniciar o servidor, será necessário informar o caminho completo do projeto (Geralmente o Portable) onde estão localizados os arquivos XAML.
+
+Atenção: Para rodar o servidor você precisará ter o .Net Core Runtime 1.1+ instalado na maquina. Para instalar [clique aqui](https://www.microsoft.com/net/download/core).
+
+Configurando e iniciando o servidor:
 
 - Faça o download do arquivo XamarinFormsLiveSync.Server.zip
 - Descompacte o arquivo
@@ -62,15 +68,20 @@ Atenção: Para rodar o servidor você precisará ter o .Net Core instalado na m
 > dotnet XamarinFormsLiveSync.Server.dll --path "CAMINHO_DO_SEU_PROJETO_COM_OS_XAML"
 ```
 
-4) Configurar o endereço do servidor
--Após iniciar o servidor será exibido uma mensagem dizendo qual o caminho de pasta que ele está escutando e qual o endereço http gerado. 
--Copie o endereço com o IP e a porta e subistitua na String "http://LOCAL_IP:PORT" que você colocou nos arquivos Android/MainActivity.cs e iOS/AppDelegate.cs
+### 4) Após iniciar o servidor, vamos configurar o endereço HTTP ###
 
-5) Pronto! 
-Basta rodar o aplicativo e visualizar a modal dizendo que o XamarinLiveSync está conectado.
-Nesse momento, basta acessar a tela que deseja e alterar o arquivo .xaml correspondente.
+- Após iniciar o servidor, será exibido uma mensagem dizendo qual o caminho da pasta que ele está escutando e qual o endereço HTTP gerado. 
+- Copie o endereço e subistitua na String "http://LOCAL_IP:PORT" que você colocou nos arquivos Android/MainActivity.cs e iOS/AppDelegate.cs
+
+### 5) Pronto! ###
+- Basta rodar o aplicativo e visualizar a modal dizendo que o XamarinLiveSync está conectado.
+- Nesse momento, basta acessar a tela que deseja e alterar o arquivo .xaml correspondente.
 
 Boa codificação!
+
+### Suporte ###
+Crie um Issue ou me contate pelo email
+[wilckerson@gmail.com](mailto:wilckerson@gmail.com)
 
 ### TODO ###
 - Criar uma pacote Nuget para facilitar o processo de instalação
