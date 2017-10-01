@@ -7,22 +7,13 @@ using Xamarin.Forms;
 
 namespace XamarinFormsLiveSync.Core
 {
-    public class XamlLiveSyncServer
+    public abstract class XamlLiveSyncServerCore
     {
         Application formsApp { get { return Application.Current; } }
-
-        static XamlLiveSyncServer instance;
-        public static void Init(string host)
+        
+        protected void InitWebsocket(string host)
         {
-            if (instance == null)
-            {
-                instance = new XamlLiveSyncServer(host);
-            }
-        }
-
-        private XamlLiveSyncServer(string host)
-        {            
-            var connection = Websockets.WebSocketFactory.Create();          
+            var connection = Websockets.WebSocketFactory.Create();
             connection.Open(host);
             connection.OnOpened += WebSocket_OnOpened;
             connection.OnMessage += WebSocket_OnMessage;

@@ -18,7 +18,7 @@
         </seg:SegmentedControl>-->
          
         <Label Text="{Binding Prop, StringFormat='format: {0}'}"
-               TextColor="Red"
+               TextColor="Blue"
                VerticalOptions="Center" 
                HorizontalOptions="Center" />
  

@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "Xam.Plugin.LiveSync.Server": {
+      "commandName": "Project"
+    }
+  }
+}

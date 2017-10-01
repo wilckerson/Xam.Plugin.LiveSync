@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace XamarinFormsLiveSync.Server
 {
@@ -45,7 +46,9 @@ namespace XamarinFormsLiveSync.Server
                 }
             }
 
-            var host = new WebHostBuilder()
+            //Task.Run(() =>
+            //{
+                var host = new WebHostBuilder()
                 .UseUrls($"http://*:{LivesyncServer.PORT}")
                 .UseKestrel()
                 .UseContentRoot(currentDicrectory)
@@ -53,7 +56,11 @@ namespace XamarinFormsLiveSync.Server
                 .UseStartup<Startup>()
                 .Build();
 
-            host.Run();
+                host.Run();
+            //});
+
+            //Console.WriteLine("After start server =)");
+            //Console.ReadKey();
         }
 
     }

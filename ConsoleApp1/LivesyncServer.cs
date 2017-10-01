@@ -14,7 +14,7 @@ namespace XamarinFormsLiveSync.Server
 {
     public class LivesyncServer
     {
-        public static int PORT = 8161;
+        public static int PORT = 8169;
         FileSystemWatcher watcher;
         string watcherPath;
         MyWebSocketHandler webSocketHandler;
