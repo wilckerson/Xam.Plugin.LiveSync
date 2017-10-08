@@ -14,23 +14,30 @@ namespace Xam.Plugin.LiveSync.Initializer
     {
         static void Main(string[] args)
         {
-            var serverPath = GetArgsValue<string>(args, "--server-path", "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Server\\bin\\Debug\\netcoreapp2.0\\Xam.Plugin.LiveSync.Server.dll");
+            var serverPath = GetArgsValue<string>(args, "--server-path","C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Server\\bin\\Debug\\netcoreapp2.0\\Xam.Plugin.LiveSync.Server.dll");
+            //var serverPath = GetArgsValue<string>(args, "--server-path", @"C:\Windows\System32\notepad.exe");
+
             var port = GetArgsValue<int>(args, "--port", 9759);
             var ip_address = GetIPAddress();
             var host = $"http://{ip_address}:{port}";
 
             Console.WriteLine($"Xam.Plugin.LiveSync.Initializer will run server at: {host}");
 
-            LiveSyncConfigGenerator.Generate(host);
+            LiveSyncConfigGenerator.GeneratePartialClass(host);
+            LiveSyncConfigGenerator.GenerateHostFile(host);
 
             //Task.Run(() =>
             //{
-                KillServerIfExistAndStartNew(serverPath);
+            KillServerIfExistAndStartNew("dotnet", 
+                serverPath, 
+                "--path \"C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync\"",
+                "--path-config \"C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Initializer\\bin\\Debug\\netcoreapp2.0\\LiveSync.host\""
+                );
             //});
             //Task.Delay(3000).Wait();
         }
 
-        static void KillServerIfExistAndStartNew(string serverPath)
+        static void KillServerIfExistAndStartNew(string execName, params string[] execArgs)
         {
             var location = Assembly.GetEntryAssembly().Location;
             var directory = Path.GetDirectoryName(location);
@@ -70,10 +77,10 @@ namespace Xam.Plugin.LiveSync.Initializer
 
             //Inicia um novo processo
             var proc = new Process();
-            proc.StartInfo.FileName = "dotnet";
-            proc.StartInfo.Arguments = serverPath;
-            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            proc.StartInfo.CreateNoWindow = true;
+            proc.StartInfo.FileName = execName; //"dotnet";
+            proc.StartInfo.Arguments = string.Join(" ",execArgs);
+            proc.StartInfo.WindowStyle = ProcessWindowStyle.Minimized; //ProcessWindowStyle.Hidden;
+            proc.StartInfo.CreateNoWindow = false;
             proc.StartInfo.UseShellExecute = true;
 
             proc.Start();

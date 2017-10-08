@@ -25,14 +25,14 @@ namespace Xam.Plugin.LiveSync.Server
         {
             loggerFactory.AddConsole();
 
-            webSocketHandler = new MyWebSocketHandler();
+            var livesyncServer = new LivesyncServer(Program.PATH_TO_WATCH,Program.HOST);
 
             app.UseWebSockets();
             app.Use(async (http, next) =>
             {
                 if (http.WebSockets.IsWebSocketRequest)
-                {                    
-                    await WebSocketRequestHandler(http, next);
+                {
+                    await livesyncServer.RequestHandler(http, next);
                     return;
                 }
 
@@ -40,41 +40,6 @@ namespace Xam.Plugin.LiveSync.Server
                 return;
                 //await next();
             });
-        }
-
-        public async Task WebSocketRequestHandler(HttpContext http, Func<Task> next)
-        {
-            var socket = await http.WebSockets.AcceptWebSocketAsync();
-            webSocketHandler.OnConnected(socket);
-
-            await Receive(socket, (result, buffer) =>
-            {
-                if (result.MessageType == WebSocketMessageType.Text)
-                {
-                    webSocketHandler.ReceiveAsync(socket, result, buffer);
-                    return;
-                }
-
-                else if (result.MessageType == WebSocketMessageType.Close)
-                {
-                    webSocketHandler.OnDisconnected(socket);
-                    return;
-                }
-
-            });
-        }
-
-        private async Task Receive(WebSocket socket, Action<WebSocketReceiveResult, byte[]> handleMessage)
-        {
-            var buffer = new byte[1024 * 4];
-
-            while (socket.State == WebSocketState.Open)
-            {
-                var result = await socket.ReceiveAsync(buffer: new ArraySegment<byte>(buffer),
-                                                       cancellationToken: CancellationToken.None).ConfigureAwait(false);
-
-                handleMessage(result, buffer);
-            }
         }
     }
 }

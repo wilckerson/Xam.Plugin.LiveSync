@@ -8,7 +8,7 @@ namespace Xam.Plugin.LiveSync.Initializer
 {
     class LiveSyncConfigGenerator
     {
-        public static void Generate(string host)
+        public static void GeneratePartialClass(string host)
         {
             var location = Assembly.GetEntryAssembly().Location;
             var directory = Path.GetDirectoryName(location);
@@ -17,6 +17,16 @@ namespace Xam.Plugin.LiveSync.Initializer
             {
                 var fileContent = GetFileContent(host);
                 writetext.Write(fileContent);
+            }
+        }
+        public static void GenerateHostFile(string host)
+        {
+            var location = Assembly.GetEntryAssembly().Location;
+            var directory = Path.GetDirectoryName(location);
+
+            using (StreamWriter writetext = new StreamWriter($"{directory}/LiveSync.host"))
+            {
+                writetext.Write(host);
             }
         }
 

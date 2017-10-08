@@ -13,15 +13,20 @@ namespace Xam.Plugin.LiveSync.Server
         public static string PATH_TO_WATCH;
         public static string IP_ADDRESS;
         public static int PORT;
-        public static string HOST { get { return $"http://{IP_ADDRESS}:{PORT}"; } }
+        public static string HOST;
 
         static void Main(string[] args)
         {
             PATH_TO_WATCH = GetArgsValue<string>(args, "--path", Directory.GetCurrentDirectory());
-            PORT = GetArgsValue<int>(args, "--port", 9759);
-            IP_ADDRESS = GetIPAddress();
+            var configFilePath = GetArgsValue<string>(args, "--path-config", Directory.GetCurrentDirectory());
 
-            Console.WriteLine($"Xam.Plugin.LiveSync.Server connected at: {HOST}");
+            var hostText = FileHelper.GetFileContent(configFilePath);
+            HOST = hostText;
+
+            var hostPort = hostText.Split(":").LastOrDefault();
+            int.TryParse(hostPort, out PORT);
+            
+            Console.WriteLine($"Xam.Plugin.LiveSync.Server connected at: {HOST} watching the directory: {PATH_TO_WATCH}");
 
             var host = new WebHostBuilder()
                 .UseUrls($"http://*:{PORT}")

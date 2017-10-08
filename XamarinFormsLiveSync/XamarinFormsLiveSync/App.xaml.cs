@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Websockets;
+//using Websockets;
 using Xamarin.Forms;
 
 namespace XamarinFormsLiveSync
@@ -13,9 +13,9 @@ namespace XamarinFormsLiveSync
         {
             InitializeComponent();
 
-            var page = new MainPage();
-            MainPage = page;
-            //MainPage = new NavigationPage(new MainPage());
+            //var page = new MainPage();
+            //MainPage = page;
+            MainPage = new NavigationPage(new MainPage());
                       
            
         }        

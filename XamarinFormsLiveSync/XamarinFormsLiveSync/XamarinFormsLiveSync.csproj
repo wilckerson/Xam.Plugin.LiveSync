@@ -55,12 +55,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="SegmentedControl.FormsPlugin.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SegmentedControl.FormsPlugin.1.3.1\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid10+Xamarin.iOS10\SegmentedControl.FormsPlugin.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="WebSockets.PCL, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Websockets.Pcl.1.1.9\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10\WebSockets.PCL.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.4.247\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
@@ -74,6 +68,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Xam.Plugin.LiveSync.Core\Xam.Plugin.LiveSync.Core.csproj">
+      <Project>{26d24673-fe17-4582-b749-6f6ee3171c9a}</Project>
+      <Name>Xam.Plugin.LiveSync.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -81,5 +81,20 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets'))" />
+  </Target>
+  <Target Name="BeforeBuild">
+    
+    <Message Text="Xam.Plugin.LiveSync: Generate LiveSyncConfig with server host" Importance="high" />
+    <Exec Command="dotnet %22C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0/Xam.Plugin.LiveSync.Initializer.dll%22" />
+    <Message Text="Xam.Plugin.LiveSync: File generated at C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0/LiveSyncConfig.cs" Importance="high" />
+    
+    
+    <Copy SourceFiles="C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0/LiveSyncConfig.cs" DestinationFolder="$(ProjectDir)" />
+    <ItemGroup>
+      <Compile Include="LiveSyncConfig.cs" />
+    </ItemGroup>
+  </Target>
+  <Target Name="AfterBuild">
+   
   </Target>
 </Project>

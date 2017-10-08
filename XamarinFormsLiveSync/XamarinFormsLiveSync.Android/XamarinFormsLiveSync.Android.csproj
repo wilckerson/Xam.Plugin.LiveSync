@@ -17,7 +17,7 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
     <JavaMaximumHeapSize />
@@ -107,7 +107,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
@@ -126,13 +128,13 @@
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\XamarinFormsLiveSync.Core.Android\XamarinFormsLiveSync.Core.Android.csproj">
-      <Project>{b62ec87a-7070-4d74-9511-aea6e5818e2f}</Project>
-      <Name>XamarinFormsLiveSync.Core.Android</Name>
+    <ProjectReference Include="..\..\Xam.Plugin.LiveSync.Core\Xam.Plugin.LiveSync.Core.csproj">
+      <Project>{26d24673-fe17-4582-b749-6f6ee3171c9a}</Project>
+      <Name>Xam.Plugin.LiveSync.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\XamarinFormsLiveSync.Core\XamarinFormsLiveSync.Core.csproj">
-      <Project>{7289a3d4-0902-4c16-a39d-28dd946839fd}</Project>
-      <Name>XamarinFormsLiveSync.Core</Name>
+    <ProjectReference Include="..\..\Xam.Plugin.LiveSync.Droid\Xam.Plugin.LiveSync.Droid.csproj">
+      <Project>{7b2a7bf4-f66c-43e1-afd0-732b1834c67e}</Project>
+      <Name>Xam.Plugin.LiveSync.Droid</Name>
     </ProjectReference>
     <ProjectReference Include="..\XamarinFormsLiveSync\XamarinFormsLiveSync.csproj">
       <Project>{552b7789-073d-4f07-a162-5d744cb8a745}</Project>
