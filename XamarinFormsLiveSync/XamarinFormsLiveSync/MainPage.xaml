@@ -8,7 +8,9 @@
     
     <StackLayout Margin="20">
 
-        <Label Text="Xamarin LiveSync 5"/>
+        <Label Text="Xamarin LiveSync"/>
+
+        <Button Text="Em tempo realllllll   kkkkkkkkkkkkkkkkk"/>
 
         <!--<seg:SegmentedControl x:Name="SegControl" TintColor="#007AFF" SelectedSegment="0">
             <seg:SegmentedControl.Children>

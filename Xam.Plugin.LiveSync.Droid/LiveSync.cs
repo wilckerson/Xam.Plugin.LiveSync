@@ -9,7 +9,7 @@ namespace Xam.Plugin.LiveSync.Droid
     {
         private LiveSync()
         {
-            var host = Xam.Plugin.LiveSync.LiveSyncConfig.GetServerHost();
+            var host = GetHost();
             Websockets.Droid.WebsocketConnection.Link();
             base.InitWebsocket(host);
         }
@@ -23,10 +23,20 @@ namespace Xam.Plugin.LiveSync.Droid
             }
         }
 
-        public static string GetHost()
+        private string GetHost()
         {
-            var host = Xam.Plugin.LiveSync.LiveSyncConfig.GetServerHost();
-            return host;
+            if(Xamarin.Forms.Application.Current == null)
+            {
+                throw new Exception("You MUST call Xam.Plugin.LiveSync.Droid.LiveSync.Init() after the line LoadApplication(new App());");
+            }
+
+            string assFullName = Xamarin.Forms.Application.Current.GetType().Assembly.GetName().FullName;
+            var assemblyQualifiedName = $"Xam.Plugin.LiveSync.LiveSyncConfig, {assFullName}";
+            var type = Type.GetType(assemblyQualifiedName);
+            var fieldInfo = type.GetField("HOST");
+            var value = fieldInfo.GetValue(null).ToString();
+
+            return value;
         }
     }
 }
