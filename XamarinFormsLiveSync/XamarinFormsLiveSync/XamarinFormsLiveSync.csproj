@@ -88,10 +88,8 @@
     <Exec Command="dotnet %22C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0/Xam.Plugin.LiveSync.Initializer.dll%22" />
     <Message Text="Xam.Plugin.LiveSync: File generated at C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0/LiveSyncConfig.cs" Importance="high" />
     
-    
-    <Copy SourceFiles="C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0/LiveSyncConfig.cs" DestinationFolder="$(ProjectDir)" />
     <ItemGroup>
-      <Compile Include="LiveSyncConfig.cs" />
+      <Compile Include="C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0/LiveSyncConfig.cs" />
     </ItemGroup>
   </Target>
   <Target Name="AfterBuild">

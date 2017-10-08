@@ -43,7 +43,7 @@ namespace XamarinFormsLiveSync
 
             //vm.Prop = "xxxxx";
 
-            var host = Xam.Plugin.LiveSync.LiveSyncConfig.GetServerHost();
+            //var host = Xam.Plugin.LiveSync.LiveSyncConfig.GetServerHost();
             //DisplayAlert("LiveSync Host", host, "OK");
         }
 

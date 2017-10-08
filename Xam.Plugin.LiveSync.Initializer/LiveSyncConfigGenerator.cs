@@ -40,12 +40,9 @@ namespace Xam.Plugin.LiveSync.Initializer
             using System;
             namespace Xam.Plugin.LiveSync
             {
-                public partial class LiveSyncConfig : BaseLiveSyncConfig
+                public class LiveSyncConfig
                 {
-                    public new static string GetServerHost()
-                    {
-                        return ""__HOST__"";
-                    }
+                    public const string HOST = ""__HOST__"";                   
                 }
             }
         ";

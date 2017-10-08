@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using System.Reflection;
 //using XamarinFormsLiveSync.Core;
 
 namespace XamarinFormsLiveSync.Droid
@@ -22,14 +23,18 @@ namespace XamarinFormsLiveSync.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
-            var host = Xam.Plugin.LiveSync.LiveSyncConfig.GetServerHost();
+
+           
+           
+            // var host = Xam.Plugin.LiveSync.LiveSyncConfig.GetServerHost();
 
             //Xam.Plugin.LiveSync.Droid.LiveSync.Init();
-            var h = Xam.Plugin.LiveSync.Droid.LiveSync.GetHost();
-
+          
             //SegmentedControl.FormsPlugin.Android.SegmentedControlRenderer.Init();
 
             LoadApplication(new App());
+
+            Xam.Plugin.LiveSync.Droid.LiveSync.Init();
 
         }
     }
