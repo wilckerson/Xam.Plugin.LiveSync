@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Xam.Plugin.LiveSync</id>
-    <version>1.0.3</version>
+    <version>1.0.14</version>
     <title>Xamarin Forms XAML LiveSync</title>
     <authors>Wilckerson Ganda, Eder Moises</authors>
     <owners>Wilckerson Ganda</owners>
@@ -19,9 +19,20 @@
     </dependencies>
   </metadata>
   <files>
+        <!-- PCL -->
         <file src="Xam.Plugin.LiveSync.Core\bin\Debug\Xam.Plugin.LiveSync.Core.dll" target="lib\portable-win+net45+wp80+win81+wpa81"/>
+
+        <!-- Android -->
         <file src="Xam.Plugin.LiveSync.Droid\bin\Debug\Xam.Plugin.LiveSync.Core.dll" target="lib\MonoAndroid10"/>
         <file src="Xam.Plugin.LiveSync.Droid\bin\Debug\Xam.Plugin.LiveSync.Droid.dll" target="lib\MonoAndroid10"/>
+
+        <!-- Target -->
         <file src="Xam.Plugin.LiveSync.targets" target="build\portable-win+net45+wp80+win81+wpa81"/>
+
+        <!-- Server -->
+        <file src="Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0\Xam.Plugin.LiveSync.Initializer.dll" target="server"/>
+        <file src="Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0\Xam.Plugin.LiveSync.Initializer.runtimeconfig.json" target="server"/>
+        <file src="Xam.Plugin.LiveSync.Server\bin\Debug\netcoreapp2.0\Xam.Plugin.LiveSync.Server.dll" target="server"/>
+        <file src="Xam.Plugin.LiveSync.Server\bin\Debug\netcoreapp2.0\Xam.Plugin.LiveSync.Server.runtimeconfig.json" target="server"/>
     </files>
 </package>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Xam.Plugin.LiveSync.Server
@@ -17,24 +18,44 @@ namespace Xam.Plugin.LiveSync.Server
 
         static void Main(string[] args)
         {
-            PATH_TO_WATCH = GetArgsValue<string>(args, "--path", Directory.GetCurrentDirectory());
-            var configFilePath = GetArgsValue<string>(args, "--path-config", Directory.GetCurrentDirectory());
+            try
+            {
+                PATH_TO_WATCH = GetArgsValue<string>(args, "--project-path", Directory.GetCurrentDirectory());
+                var configFilePath = GetArgsValue<string>(args, "--config-path", Directory.GetCurrentDirectory());
 
-            var hostText = FileHelper.GetFileContent(configFilePath);
-            HOST = hostText;
+                var hostText = FileHelper.GetFileContent(configFilePath);
+                HOST = hostText;
 
-            var hostPort = hostText.Split(":").LastOrDefault();
-            int.TryParse(hostPort, out PORT);
-            
-            Console.WriteLine($"Xam.Plugin.LiveSync.Server connected at: {HOST} watching the directory: {PATH_TO_WATCH}");
+                var hostPort = hostText.Split(":").LastOrDefault();
+                int.TryParse(hostPort, out PORT);
 
-            var host = new WebHostBuilder()
-                .UseUrls($"http://*:{PORT}")
-                .UseKestrel()
-                .UseStartup<Startup>()
-                .Build();
+                Console.WriteLine($"Xam.Plugin.LiveSync.Server connected at: {HOST} watching the directory: {PATH_TO_WATCH}");
 
-            host.Run();
+                var host = new WebHostBuilder()
+                    .UseUrls($"http://*:{PORT}")
+                    .UseKestrel()
+                    .UseStartup<Startup>()
+                    .Build();
+
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                var location = Assembly.GetEntryAssembly().Location;
+                var directory = Path.GetDirectoryName(location);
+
+                using (StreamWriter writetext = new StreamWriter($"{directory}/ServerException_{DateTime.Now}.log"))
+                {
+                    writetext.WriteLine(ex.Message);
+                    writetext.WriteLine(ex.StackTrace);
+
+                    if (ex.InnerException != null)
+                    {
+                        writetext.WriteLine(ex.InnerException.Message);
+                        writetext.WriteLine(ex.InnerException.StackTrace);
+                    }
+                }
+            }
         }
 
         static string GetIPAddress()

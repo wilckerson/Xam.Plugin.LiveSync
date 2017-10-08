@@ -14,27 +14,49 @@ namespace Xam.Plugin.LiveSync.Initializer
     {
         static void Main(string[] args)
         {
-            var serverPath = GetArgsValue<string>(args, "--server-path","C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Server\\bin\\Debug\\netcoreapp2.0\\Xam.Plugin.LiveSync.Server.dll");
-            //var serverPath = GetArgsValue<string>(args, "--server-path", @"C:\Windows\System32\notepad.exe");
+            try
+            {
+                var serverPath = GetArgsValue<string>(args, "--server-path", "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Server\\bin\\Debug\\netcoreapp2.0\\Xam.Plugin.LiveSync.Server.dll");
+                var projectPath = GetArgsValue<string>(args, "--project-path", "C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync");
+                var configPath = GetArgsValue<string>(args, "--config-path", "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Initializer\\bin\\Debug\\netcoreapp2.0\\LiveSync.host");
+                //var serverPath = GetArgsValue<string>(args, "--server-path", @"C:\Windows\System32\notepad.exe");
 
-            var port = GetArgsValue<int>(args, "--port", 9759);
-            var ip_address = GetIPAddress();
-            var host = $"http://{ip_address}:{port}";
+                var port = GetArgsValue<int>(args, "--port", 9759);
+                var ip_address = GetIPAddress();
+                var host = $"http://{ip_address}:{port}";
 
-            Console.WriteLine($"Xam.Plugin.LiveSync.Initializer will run server at: {host}");
+                Console.WriteLine($"Xam.Plugin.LiveSync.Initializer will run server at: {host}");
 
-            LiveSyncConfigGenerator.GeneratePartialClass(host);
-            LiveSyncConfigGenerator.GenerateHostFile(host);
+                LiveSyncConfigGenerator.GeneratePartialClass(host);
+                LiveSyncConfigGenerator.GenerateHostFile(host);
 
-            //Task.Run(() =>
-            //{
-            KillServerIfExistAndStartNew("dotnet", 
-                serverPath, 
-                "--path \"C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync\"",
-                "--path-config \"C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Initializer\\bin\\Debug\\netcoreapp2.0\\LiveSync.host\""
-                );
-            //});
-            //Task.Delay(3000).Wait();
+                //Task.Run(() =>
+                //{
+                KillServerIfExistAndStartNew("dotnet",
+                    serverPath,
+                    $"--project-path {projectPath}",
+                    $"--config-path {configPath}"
+                    );
+                //});
+                //Task.Delay(3000).Wait();
+            }
+            catch (Exception ex)
+            {
+                var location = Assembly.GetEntryAssembly().Location;
+                var directory = Path.GetDirectoryName(location);
+
+                using (StreamWriter writetext = new StreamWriter($"{directory}/Exception_{DateTime.Now}.log"))
+                {
+                    writetext.WriteLine(ex.Message);
+                    writetext.WriteLine(ex.StackTrace);
+
+                    if (ex.InnerException != null)
+                    {
+                        writetext.WriteLine(ex.InnerException.Message);
+                        writetext.WriteLine(ex.InnerException.StackTrace);
+                    }
+                }
+            }
         }
 
         static void KillServerIfExistAndStartNew(string execName, params string[] execArgs)
@@ -78,7 +100,7 @@ namespace Xam.Plugin.LiveSync.Initializer
             //Inicia um novo processo
             var proc = new Process();
             proc.StartInfo.FileName = execName; //"dotnet";
-            proc.StartInfo.Arguments = string.Join(" ",execArgs);
+            proc.StartInfo.Arguments = string.Join(" ", execArgs);
             proc.StartInfo.WindowStyle = ProcessWindowStyle.Minimized; //ProcessWindowStyle.Hidden;
             proc.StartInfo.CreateNoWindow = false;
             proc.StartInfo.UseShellExecute = true;
