@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Xam.Plugin.LiveSync</id>
+    <version>1.0.3</version>
+    <title>Xamarin Forms XAML LiveSync</title>
+    <authors>Wilckerson Ganda, Eder Moises</authors>
+    <owners>Wilckerson Ganda</owners>
+    <!--<licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>-->
+    <projectUrl>https://bitbucket.org/wilckersonganda/xamarinformslivesync</projectUrl>
+    <!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>See your Xamarin Forms XAML interface changes in real time without wasting time compiling each time. \o/</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>xamarin xamarin.forms xaml livesync live sync</tags>
+    <dependencies>
+      <dependency id="Websockets.Pcl" version="1.1.9" />
+    </dependencies>
+  </metadata>
+  <files>
+        <file src="Xam.Plugin.LiveSync.Core\bin\Debug\Xam.Plugin.LiveSync.Core.dll" target="lib\portable-win+net45+wp80+win81+wpa81"/>
+        <file src="Xam.Plugin.LiveSync.Droid\bin\Debug\Xam.Plugin.LiveSync.Core.dll" target="lib\MonoAndroid10"/>
+        <file src="Xam.Plugin.LiveSync.Droid\bin\Debug\Xam.Plugin.LiveSync.Droid.dll" target="lib\MonoAndroid10"/>
+        <file src="Xam.Plugin.LiveSync.targets" target="build\portable-win+net45+wp80+win81+wpa81"/>
+    </files>
+</package>
