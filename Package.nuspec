@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Xam.Plugin.LiveSync</id>
-    <version>1.0.14</version>
+    <version>1.0.20</version>
     <title>Xamarin Forms XAML LiveSync</title>
     <authors>Wilckerson Ganda, Eder Moises</authors>
     <owners>Wilckerson Ganda</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://bitbucket.org/wilckersonganda/xamarinformslivesync</projectUrl>
     <!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>See your Xamarin Forms XAML interface changes in real time without wasting time compiling each time. \o/</description>
+    <description>See your Xamarin Forms XAML interface changing instantaneously just on save the file, without wasting time building the project every time. \o/</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>xamarin xamarin.forms xaml livesync live sync</tags>
@@ -30,9 +30,23 @@
         <file src="Xam.Plugin.LiveSync.targets" target="build\portable-win+net45+wp80+win81+wpa81"/>
 
         <!-- Server -->
+        <file src="Xam.Plugin.LiveSync.Initializer\bin\Release\PublishOutput\*" target="server"/>
+        <file src="Xam.Plugin.LiveSync.Server\bin\Release\PublishOutput\*" target="server"/>
+        <file src="Xam.Plugin.LiveSync.Server\bin\Release\PublishOutput\runtimes\win-x64\native\*" target="server\runtimes\win-x64\native"/>
+        <file src="Xam.Plugin.LiveSync.Server\bin\Release\PublishOutput\runtimes\win-x86\native\*" target="server\runtimes\win-x86\native"/>
+        <file src="Xam.Plugin.LiveSync.Server\bin\Release\PublishOutput\runtimes\win-arm\native\*" target="server\runtimes\win-arm\native"/>
+         <file src="Xam.Plugin.LiveSync.Server\bin\Release\PublishOutput\runtimes\osx\native\*" target="server\runtimes\osx\native"/>
+        <!--
         <file src="Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0\Xam.Plugin.LiveSync.Initializer.dll" target="server"/>
         <file src="Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0\Xam.Plugin.LiveSync.Initializer.runtimeconfig.json" target="server"/>
         <file src="Xam.Plugin.LiveSync.Server\bin\Debug\netcoreapp2.0\Xam.Plugin.LiveSync.Server.dll" target="server"/>
         <file src="Xam.Plugin.LiveSync.Server\bin\Debug\netcoreapp2.0\Xam.Plugin.LiveSync.Server.runtimeconfig.json" target="server"/>
+    -->
+
+        <!-- NetCore Runtime dependencies -->
+        <!--
+        <file src="runtimeDependencies\Microsoft.AspNetCore.WebSockets.Protocol.dll" target="server"/>
+        <file src="runtimeDependencies\Microsoft.AspNetCore.WebSockets.Server.dll" target="server"/>
+         -->
     </files>
 </package>

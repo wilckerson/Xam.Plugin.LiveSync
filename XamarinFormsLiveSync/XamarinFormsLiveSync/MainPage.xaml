@@ -10,7 +10,7 @@
 
         <Label Text="Xamarin LiveSync"/>
 
-        <Button Text="Nuget + target"/>
+        <Button Text="Nuget + target 3"/>
 
         <!--<seg:SegmentedControl x:Name="SegControl" TintColor="#007AFF" SelectedSegment="0">
             <seg:SegmentedControl.Children>

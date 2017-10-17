@@ -90,7 +90,7 @@ namespace Xam.Plugin.LiveSync.Server
                 {
                     await webSocketHandler.SendMessageToAllAsync(data);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 //catch (System.ObjectDisposedException ex)
                 {
                     //Se der algum erro, reinicia o Socket mantendo as conexoes abertas

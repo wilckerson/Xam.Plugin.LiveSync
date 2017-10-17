@@ -2,7 +2,7 @@
   "profiles": {
     "Xam.Plugin.LiveSync.Server": {
       "commandName": "Project",
-      "commandLineArgs": "--path \"C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync\" --path-config \"C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Initializer\\bin\\Debug\\netcoreapp2.0\\LiveSync.host\""
+      "commandLineArgs": "--project-path C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\ --config-path C:\\Projetos\\XamarinFormsLiveSync\\packages\\Xam.Plugin.LiveSync.1.0.15\\server\\LiveSync.host"
     }
   }
 }

@@ -12,38 +12,46 @@ namespace Xam.Plugin.LiveSync.Server
     class Program
     {
         public static string PATH_TO_WATCH;
-        public static string IP_ADDRESS;
         public static int PORT;
         public static string HOST;
 
         static void Main(string[] args)
         {
+            var location = Assembly.GetEntryAssembly().Location;
+            var directory = Path.GetDirectoryName(location);
+            
             try
             {
-                PATH_TO_WATCH = GetArgsValue<string>(args, "--project-path", Directory.GetCurrentDirectory());
-                var configFilePath = GetArgsValue<string>(args, "--config-path", Directory.GetCurrentDirectory());
+                //using (StreamWriter debugLogFile = new StreamWriter($"{directory}/Server_Debug.log"))
+                {
+                    PATH_TO_WATCH = GetArgsValue<string>(args, "--project-path", Directory.GetCurrentDirectory());
+                    var configFilePath = GetArgsValue<string>(args, "--config-path", Directory.GetCurrentDirectory());
 
-                var hostText = FileHelper.GetFileContent(configFilePath);
-                HOST = hostText;
+                    //debugLogFile.WriteLine($"{DateTime.Now}: --project-path {PATH_TO_WATCH}");
+                    //debugLogFile.WriteLine($"{DateTime.Now}: --config-path {configFilePath}");
 
-                var hostPort = hostText.Split(":").LastOrDefault();
-                int.TryParse(hostPort, out PORT);
+                    var hostText = FileHelper.GetFileContent(configFilePath);
+                    HOST = hostText;
+                    
+                    var hostPort = hostText.Split(":").LastOrDefault();
+                    int.TryParse(hostPort, out PORT);
 
-                Console.WriteLine($"Xam.Plugin.LiveSync.Server connected at: {HOST} watching the directory: {PATH_TO_WATCH}");
+                    //debugLogFile.WriteLine($"{DateTime.Now}: host {HOST}");
 
-                var host = new WebHostBuilder()
-                    .UseUrls($"http://*:{PORT}")
-                    .UseKestrel()
-                    .UseStartup<Startup>()
-                    .Build();
+                    Console.WriteLine($"Xam.Plugin.LiveSync.Server connected at: {HOST} watching the directory: {PATH_TO_WATCH}");
 
-                host.Run();
+                    var host = new WebHostBuilder()
+                        .UseUrls($"http://*:{PORT}")
+                        .UseKestrel()
+                        .UseStartup<Startup>()
+                        .Build();
+
+                    host.Run();
+                }
             }
             catch (Exception ex)
             {
-                var location = Assembly.GetEntryAssembly().Location;
-                var directory = Path.GetDirectoryName(location);
-
+              
                 using (StreamWriter writetext = new StreamWriter($"{directory}/ServerException_{DateTime.Now}.log"))
                 {
                     writetext.WriteLine(ex.Message);

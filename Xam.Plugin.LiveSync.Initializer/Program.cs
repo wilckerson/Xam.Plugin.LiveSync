@@ -14,36 +14,42 @@ namespace Xam.Plugin.LiveSync.Initializer
     {
         static void Main(string[] args)
         {
+            var location = Assembly.GetEntryAssembly().Location;
+            var directory = Path.GetDirectoryName(location);
+
             try
             {
-                var serverPath = GetArgsValue<string>(args, "--server-path", "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Server\\bin\\Debug\\netcoreapp2.0\\Xam.Plugin.LiveSync.Server.dll");
-                var projectPath = GetArgsValue<string>(args, "--project-path", "C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync");
-                var configPath = GetArgsValue<string>(args, "--config-path", "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Initializer\\bin\\Debug\\netcoreapp2.0\\LiveSync.host");
-                //var serverPath = GetArgsValue<string>(args, "--server-path", @"C:\Windows\System32\notepad.exe");
+                //using (StreamWriter debugLogFile = new StreamWriter($"{directory}/Initializer_Debug.log"))
+                {
+                    var serverPath = GetArgsValue<string>(args, "--server-path", "");// "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Server\\bin\\Debug\\netcoreapp2.0\\Xam.Plugin.LiveSync.Server.dll");
+                    var projectPath = GetArgsValue<string>(args, "--project-path", "");// "C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync");
+                    var configPath = GetArgsValue<string>(args, "--config-path", "");// "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Initializer\\bin\\Debug\\netcoreapp2.0\\LiveSync.host");
 
-                var port = GetArgsValue<int>(args, "--port", 9759);
-                var ip_address = GetIPAddress();
-                var host = $"http://{ip_address}:{port}";
+                    //debugLogFile.WriteLine($"{DateTime.Now}: --server-path {serverPath}");
+                    //debugLogFile.WriteLine($"{DateTime.Now}: --project-path {projectPath}");
+                    //debugLogFile.WriteLine($"{DateTime.Now}: --config-path {configPath}");
 
-                Console.WriteLine($"Xam.Plugin.LiveSync.Initializer will run server at: {host}");
+                    var port = GetArgsValue<int>(args, "--port", 9759);
+                    var ip_address = GetIPAddress();
+                    var host = $"http://{ip_address}:{port}";
 
-                LiveSyncConfigGenerator.GeneratePartialClass(host);
-                LiveSyncConfigGenerator.GenerateHostFile(host);
+                    Console.WriteLine($"Xam.Plugin.LiveSync.Initializer will run server at: {host}");
 
-                //Task.Run(() =>
-                //{
-                KillServerIfExistAndStartNew("dotnet",
-                    serverPath,
-                    $"--project-path {projectPath}",
-                    $"--config-path {configPath}"
-                    );
-                //});
-                //Task.Delay(3000).Wait();
+                    LiveSyncConfigGenerator.GeneratePartialClass(host);
+                    LiveSyncConfigGenerator.GenerateHostFile(host);
+
+                    KillServerIfExistAndStartNew("dotnet",
+                        serverPath,
+                        $"--project-path {projectPath}",
+                        $"--config-path {configPath}"
+                        );
+
+                    //debugLogFile.WriteLine($"{DateTime.Now}: Executou o server");
+                }
             }
             catch (Exception ex)
             {
-                var location = Assembly.GetEntryAssembly().Location;
-                var directory = Path.GetDirectoryName(location);
+                
 
                 using (StreamWriter writetext = new StreamWriter($"{directory}/Exception_{DateTime.Now}.log"))
                 {
@@ -84,7 +90,7 @@ namespace Xam.Plugin.LiveSync.Initializer
 
                             Console.WriteLine("Old server killed");
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                         }
 
