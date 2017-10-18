@@ -11,10 +11,10 @@ namespace Xam.Plugin.LiveSync.XamlParser
     {
         string defaultAssemblyQualifiedName;
         string defaultConverterAssemblyQualifiedName;
-        LayoutOptionsConverter loConverter = null;
-        ThicknessTypeConverter thicknessConverter = null;
-        ColorTypeConverter colorConverter = null;
-        GridLengthTypeConverter gridLConverter = null;
+        //LayoutOptionsConverter loConverter = null;
+        //ThicknessTypeConverter thicknessConverter = null;
+        //ColorTypeConverter colorConverter = null;
+        //GridLengthTypeConverter gridLConverter = null;
         object rootPage;
 
         public XamlAstBuilder(object rootPage)
@@ -27,7 +27,6 @@ namespace Xam.Plugin.LiveSync.XamlParser
 
         public object BuildNode(AstNode node)
         {
-            //TODO: node.Namespace
             if (node == null) return null;
 
             Type type = null;
@@ -39,7 +38,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
 
                 if (string.IsNullOrEmpty(assembly))
                 {
-                    assembly = usingNamespace;
+                    assembly = usingNamespace.Split('.').FirstOrDefault();
                 }
 
                 var assemblyQualifiedName = $"{usingNamespace}.{node.Name}, {assembly}";
@@ -52,7 +51,10 @@ namespace Xam.Plugin.LiveSync.XamlParser
                 type = Type.GetType(assemblyQualifiedName);
             }
 
-            if (type == null) return null;
+            if (type == null)
+            {
+                throw new Exception($"Error on namespace declaration for {node.Name}");
+            }
 
             if (type == typeof(DataTemplate))
             {
@@ -90,6 +92,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
                     foreach (var children in childrens)
                     {
                         var subObj = BuildNode(children);
+                        if (subObj == null) { continue; }
                         var layout = (IList<View>)propChildren.GetValue(obj);
                         layout.Add((subObj as View));
                     }
@@ -102,11 +105,11 @@ namespace Xam.Plugin.LiveSync.XamlParser
                         foreach (var children in childrens)
                         {
                             var subObj = BuildNode(children);
-                            if (subObj != null)
-                            {
-                                var layout = (IList<View>)prop2Children.GetValue(obj);
-                                layout.Add((subObj as View));
-                            }
+                            if (subObj == null) { continue; }
+
+                            var layout = (IList<View>)prop2Children.GetValue(obj);
+                            layout.Add((subObj as View));
+
                         }
                     }
                     else
@@ -115,7 +118,10 @@ namespace Xam.Plugin.LiveSync.XamlParser
                         if (propContent != null)
                         {
                             var subObj = BuildNode(childrens.FirstOrDefault());
-                            propContent.SetValue(obj, subObj);
+                            if (subObj != null)
+                            {
+                                propContent.SetValue(obj, subObj);
+                            }
                         }
                     }
                 }
@@ -138,6 +144,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
                 foreach (var item in elmProp.Value)
                 {
                     var subObj = BuildNode(item);
+                    if (subObj == null) { continue; }
 
                     if (propTypeInfo.IsGenericType && propTypeInfo.GetGenericTypeDefinition() == typeof(IList<>))
                     {
@@ -162,7 +169,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
                         }
                         catch (Exception ex)
                         {
-
+                            Application.Current.MainPage.DisplayAlert("Livesync", $"Invalid value on property {prop.Name}. {ex.Message}", "Ok");
                         }
                     }
                 }
@@ -274,14 +281,17 @@ namespace Xam.Plugin.LiveSync.XamlParser
                             .Trim();
 
                         //Busca o estilo na pagina
-                        if ((rootPage as VisualElement).Resources.TryGetValue(resourcePath, out object pageResourceValue))
+                        var resDic = (rootPage as VisualElement).Resources;
+                        if (resDic != null && resDic.TryGetValue(resourcePath, out object pageResourceValue))
                         {
                             prop.SetValue(obj, pageResourceValue);
+                            continue;
                         }
                         //Caso contrário busca o estilo global
-                        else if (Application.Current.Resources.TryGetValue(resourcePath, out object resourceValue))
+                        else if (Application.Current.Resources != null && Application.Current.Resources.TryGetValue(resourcePath, out object resourceValue))
                         {
                             prop.SetValue(obj, resourceValue);
+                            continue;
                         }
                     }
 
@@ -333,7 +343,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
                 }
                 catch (Exception ex)
                 {
-
+                    Application.Current.MainPage.DisplayAlert("Livesync", $"Invalid value on property {attr.Key}. {ex.Message}", "Ok");
                 }
             }
         }

@@ -21,9 +21,14 @@ namespace Xam.Plugin.LiveSync.Initializer
             {
                 //using (StreamWriter debugLogFile = new StreamWriter($"{directory}/Initializer_Debug.log"))
                 {
-                    var serverPath = GetArgsValue<string>(args, "--server-path", "");// "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Server\\bin\\Debug\\netcoreapp2.0\\Xam.Plugin.LiveSync.Server.dll");
-                    var projectPath = GetArgsValue<string>(args, "--project-path", "");// "C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync");
-                    var configPath = GetArgsValue<string>(args, "--config-path", "");// "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Initializer\\bin\\Debug\\netcoreapp2.0\\LiveSync.host");
+                    var serverPath = GetArgsValue<string>(args, "--server-path", "").Trim();// "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Server\\bin\\Debug\\netcoreapp2.0\\Xam.Plugin.LiveSync.Server.dll");
+                    var projectPath = GetArgsValue<string>(args, "--project-path", "").Trim();// "C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync");
+                    var configPath = GetArgsValue<string>(args, "--config-path", "").Trim();// "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Initializer\\bin\\Debug\\netcoreapp2.0\\LiveSync.host");
+
+                    if(projectPath.Last() == '\\')
+                    {
+                        projectPath = projectPath.Substring(0, projectPath.Length - 1);
+                    }
 
                     //debugLogFile.WriteLine($"{DateTime.Now}: --server-path {serverPath}");
                     //debugLogFile.WriteLine($"{DateTime.Now}: --project-path {projectPath}");
@@ -39,9 +44,9 @@ namespace Xam.Plugin.LiveSync.Initializer
                     LiveSyncConfigGenerator.GenerateHostFile(host);
 
                     KillServerIfExistAndStartNew("dotnet",
-                        serverPath,
-                        $"--project-path {projectPath}",
-                        $"--config-path {configPath}"
+                        $"\"{serverPath}\"",
+                        $"--project-path \"{projectPath}\"",
+                        $"--config-path \"{configPath}\""
                         );
 
                     //debugLogFile.WriteLine($"{DateTime.Now}: Executou o server");

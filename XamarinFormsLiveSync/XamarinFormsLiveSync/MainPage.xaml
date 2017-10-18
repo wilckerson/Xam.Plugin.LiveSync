@@ -2,16 +2,22 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:XamarinFormsLiveSync"
-              
+               xmlns:behaviors="clr-namespace:XamarinFormsLiveSync.Behaviors"
              x:Class="XamarinFormsLiveSync.MainPage">
     <!--xmlns:seg="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions"-->
     
     <StackLayout Margin="20">
 
-        <Label Text="Xamarin LiveSync"/>
+        <Label Text="Xamarin LiveSync 2"/>
 
-        <Button Text="Nuget + target 3"/>
+        <Button Text="Nuget + target" BackgroundColor="{StaticResource PrimaryDark}"/>
 
+        <Entry Placeholder="Data de Nascimento" BackgroundColor="#fec70b" TextColor="#272a65" Keyboard="Numeric">
+            <Entry.Behaviors>
+                <behaviors:DataMaskBehavior/>
+            </Entry.Behaviors>
+        </Entry>
+        
         <!--<seg:SegmentedControl x:Name="SegControl" TintColor="#007AFF" SelectedSegment="0">
             <seg:SegmentedControl.Children>
                 <seg:SegmentedControlOption Text="Tab 1" />

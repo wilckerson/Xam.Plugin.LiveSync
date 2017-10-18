@@ -70,12 +70,6 @@
     <Reference Include="WebSockets.PCL, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Websockets.Pcl.1.1.9\lib\MonoAndroid\WebSockets.PCL.dll</HintPath>
     </Reference>
-    <Reference Include="Xam.Plugin.LiveSync.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xam.Plugin.LiveSync.1.0.20\lib\MonoAndroid10\Xam.Plugin.LiveSync.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Xam.Plugin.LiveSync.Droid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xam.Plugin.LiveSync.1.0.20\lib\MonoAndroid10\Xam.Plugin.LiveSync.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Android.Support.Animated.Vector.Drawable.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
     </Reference>
@@ -140,6 +134,14 @@
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Xam.Plugin.LiveSync.Core\Xam.Plugin.LiveSync.Core.csproj">
+      <Project>{26d24673-fe17-4582-b749-6f6ee3171c9a}</Project>
+      <Name>Xam.Plugin.LiveSync.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Xam.Plugin.LiveSync.Droid\Xam.Plugin.LiveSync.Droid.csproj">
+      <Project>{7b2a7bf4-f66c-43e1-afd0-732b1834c67e}</Project>
+      <Name>Xam.Plugin.LiveSync.Droid</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XamarinFormsLiveSync\XamarinFormsLiveSync.csproj">
       <Project>{552b7789-073d-4f07-a162-5d744cb8a745}</Project>
       <Name>XamarinFormsLiveSync</Name>

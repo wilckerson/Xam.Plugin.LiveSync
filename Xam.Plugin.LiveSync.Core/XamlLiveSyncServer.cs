@@ -48,51 +48,58 @@ namespace Xam.Plugin.LiveSync
 
         void UpdateViewContent<T>(T page, string fileName, string fileContent)
         {
-            //Verifica se o arquivo mudado é referente a pagina atual
-            var pageName = "";
-            if (page is ContentPage)
+            try
             {
-                pageName = page.GetType().Name + ".xaml";
-                if (fileName == pageName)
+                //Verifica se o arquivo mudado é referente a pagina atual
+                var pageName = "";
+                if (page is ContentPage)
                 {
-                    Device.BeginInvokeOnMainThread(() =>
+                    pageName = page.GetType().Name + ".xaml";
+                    if (fileName == pageName)
                     {
-                       XamlParser.XamlParser.ApplyXamlToPage((page as ContentPage), fileContent);  
-                    });
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            XamlParser.XamlParser.ApplyXamlToPage((page as ContentPage), fileContent);
+                        });
+                    }
                 }
-            }
-            else if (page is ContentView)
-            {
-                pageName = page.GetType().Name + ".xaml";
-                if (fileName == pageName)
+                else if (page is ContentView)
                 {
-                    Device.BeginInvokeOnMainThread(() =>
+                    pageName = page.GetType().Name + ".xaml";
+                    if (fileName == pageName)
                     {
-                        XamlParser.XamlParser.ApplyXamlToContentView((page as ContentView), fileContent);
-                    });
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            XamlParser.XamlParser.ApplyXamlToContentView((page as ContentView), fileContent);
+                        });
+                    }
                 }
-            }
-            else if (page is NavigationPage)
-            {
-                var subPage = (page as NavigationPage).CurrentPage;
-                UpdateViewContent(subPage, fileName, fileContent);
-                return;
-            }
-            else if (page is MasterDetailPage)
-            {
+                else if (page is NavigationPage)
+                {
+                    var subPage = (page as NavigationPage).CurrentPage;
+                    UpdateViewContent(subPage, fileName, fileContent);
+                    return;
+                }
+                else if (page is MasterDetailPage)
+                {
                     var subPageMaster = (page as MasterDetailPage).Master;
                     var subPageDetail = (page as MasterDetailPage).Detail;
 
                     UpdateViewContent(subPageMaster, fileName, fileContent);
                     UpdateViewContent(subPageDetail, fileName, fileContent);
                     return;
-                
+
+                }
+                else if (page is TabbedPage)
+                {
+                    var subPage = (page as TabbedPage).CurrentPage;
+                    UpdateViewContent(subPage, fileName, fileContent);
+                    return;
+                }
             }
-            else if (page is TabbedPage)
+            catch (Exception ex)
             {
-                var subPage = (page as TabbedPage).CurrentPage;
-                UpdateViewContent(subPage, fileName, fileContent);
-                return;
+                formsApp.MainPage.DisplayAlert("Livesync: Error Updating ViewContent", ex.Message, "Ok");
             }
         }
 

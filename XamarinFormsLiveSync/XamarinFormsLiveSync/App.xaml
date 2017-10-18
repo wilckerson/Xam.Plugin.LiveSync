@@ -4,7 +4,11 @@
              x:Class="XamarinFormsLiveSync.App">
 	<Application.Resources>
 
-		<!-- Application resource dictionary -->
+        <ResourceDictionary>
+            <Color x:Key="Primary">#2196F3</Color>
+            <Color x:Key="PrimaryDark">#272A65</Color>
+        </ResourceDictionary>
+        <!-- Application resource dictionary -->
 
 	</Application.Resources>
 </Application>

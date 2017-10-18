@@ -24,8 +24,8 @@ namespace Xam.Plugin.LiveSync.Server
             {
                 //using (StreamWriter debugLogFile = new StreamWriter($"{directory}/Server_Debug.log"))
                 {
-                    PATH_TO_WATCH = GetArgsValue<string>(args, "--project-path", Directory.GetCurrentDirectory());
-                    var configFilePath = GetArgsValue<string>(args, "--config-path", Directory.GetCurrentDirectory());
+                    PATH_TO_WATCH = GetArgsValue<string>(args, "--project-path", "").Trim();
+                    var configFilePath = GetArgsValue<string>(args, "--config-path", "").Trim();
 
                     //debugLogFile.WriteLine($"{DateTime.Now}: --project-path {PATH_TO_WATCH}");
                     //debugLogFile.WriteLine($"{DateTime.Now}: --config-path {configFilePath}");
