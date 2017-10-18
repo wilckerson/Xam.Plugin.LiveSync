@@ -2,7 +2,7 @@
 
 Não perca mais tempo compilando sua aplicação para ver o resultado das suas alterações de interface XAML.
 
-O XamarinFormsLiveSync é uma ferramenta gratuita e de código aberto que te permite visualizar em tempo real as alterações.
+O XamarinFormsLiveSync é uma ferramenta gratuita e de código aberto que te permite visualizar em tempo real as alterações sempre que você salva um arquivo XAML.
 
 Ele funciona de dentro do seu aplicativo, suportando com isso quase tudo que sua aplicação possui, como StaticResources, CustomControls, CustomRenderers, etc.
 
@@ -10,72 +10,35 @@ Essa abordagem traz melhores resultados se comparado com ferramentas similares c
 
 ## Como utilizar? ##
 
-### 1) Adicionar as bibliotecas necessárias de acordo com as plataformas ###
+Basta fazer da mesma forma que a maioria dos plugins para Xamarin Forms.
 
-Android
-
-- Adicionar o pacote NuGet 'Websockets.Pcl v1.1.9'
-- Fazer o download e adicionar referência ao arquivo 'XamarinFormsLiveSync.Core.dll'
-
-iOS
-
-- Adicionar o pacote NuGet 'SocketRocket Web Sockets v.0.5.1'
-- Adicionar o pacote NuGet 'Websockets Portable v.1.1.9'
-- Fazer o download e adicionar referência ao arquivo 'XamarinFormsLiveSync.Core.dll'
+### 1) Adicionar o pacote NuGet no projeto Portable e nas plataformas Android e iOS ###
 
 ### 2) Chamar os códigos de inicialização ###
 
-Adicione o código abaixo de acordo com a plataforma, logo antes da linha que chama o método "LoadApplication"
+Adicione o código abaixo de acordo com a plataforma. 
+#ATENÇÂO#: Os códigos abaixo PRECISAM ESTAR APÓS a da linha que chama o método "LoadApplication", caso contrário uma Exception será disparada.
 
 Android/MainActivity.cs:
  
 ```
 //... Xamarin.Forms.Forms.Init();
-
-//XamarinLivesync
-Websockets.Droid.WebsocketConnection.Link();
-XamarinFormsLiveSync.Core.XamlLiveSyncServer.Init("http://LOCAL_IP:PORT");
-
 //... LoadApplication(...)
+
+Xam.Plugin.LiveSync.Droid.LiveSync.Init();
 ```
 
 iOS/AppDelegate.cs:
 
 ```
 //... Xamarin.Forms.Forms.Init();
-
-//XamarinLivesync
-Websockets.Ios.WebsocketConnection.Link();
-XamarinFormsLiveSync.Core.XamlLiveSyncServer.Init("http://LOCAL_IP:PORT");
-
 //... LoadApplication(...)
+
+Xam.Plugin.LiveSync.iOS.LiveSync.Init();
 ```
 
-### 3) Iniciar o servidor de sincronização ###
-
-O servidor de sincronização é uma aplicação que roda no terminal que fica observando as mudanças que você faz nos arquivos *.xaml
-
-Ao iniciar o servidor, será necessário informar o caminho completo do projeto (Geralmente o Portable) onde estão localizados os arquivos XAML.
-
-Atenção: Para rodar o servidor você precisará ter o .Net Core Runtime 1.1+ instalado na maquina. Para instalar [clique aqui](https://www.microsoft.com/net/download/core).
-
-Configurando e iniciando o servidor:
-
-- Faça o download do arquivo XamarinFormsLiveSync.Server.zip
-- Descompacte o arquivo
-- Abra o terminal e navegue até a pasta descompactada
-- Rode o comando abaixo informando o caminho para o seu projeto (--path) 
-```bash
-> dotnet XamarinFormsLiveSync.Server.dll --path "CAMINHO_DO_SEU_PROJETO_COM_OS_XAML"
-```
-
-### 4) Após iniciar o servidor, vamos configurar o endereço HTTP ###
-
-- Após iniciar o servidor, será exibido uma mensagem dizendo qual o caminho da pasta que ele está escutando e qual o endereço HTTP gerado. 
-- Copie o endereço e subistitua na String "http://LOCAL_IP:PORT" que você colocou nos arquivos Android/MainActivity.cs e iOS/AppDelegate.cs
-
-### 5) Pronto! ###
-- Basta rodar o aplicativo e visualizar a modal dizendo que o XamarinLiveSync está conectado.
+### 3) Pronto! ###
+- Basta rodar o aplicativo e visualizar a modal dizendo que o Xamarin Forms LiveSync está conectado.
 - Nesse momento, basta acessar a tela que deseja e alterar o arquivo .xaml correspondente.
 
 Boa codificação!
@@ -84,5 +47,26 @@ Boa codificação!
 Crie um Issue ou me contate pelo email
 [wilckerson@gmail.com](mailto:wilckerson@gmail.com)
 
-### TODO ###
-- Criar uma pacote Nuget para facilitar o processo de instalação
+### Problemas comuns ###
+
+- Caso esteja disparando uma exception desconhecida no metodo de inicialização, verifique se o metodo Init do plugin está sendo chamado APÓS o metodo LoadApplication.
+- Quando estiver trabalhando com controles customizados, que você tenha feito ou de terceiros, e eles desaparecerem da tela durante o Livesync ou então encerrar inesperadamente o aplicativo, verifique se no cabeçalho do seu arquivo XAML você está chamando o namespace e o assembly corretamente. Exemplo:
+#Errado#
+```
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyAppNamespace.MyControls"              
+             x:Class="MyAppNamespace.MainPage">
+    <local:MyCustomControl />
+</ContentPage>
+```
+
+#Certo#
+```
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyAppNamespace.MyControls;assembly=MyAppNamespace"              
+             x:Class="MyAppNamespace.MainPage">
+    <local:MyCustomControl />
+</ContentPage>
+```
