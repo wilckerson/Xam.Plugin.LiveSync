@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "XamarinFormsLiveSync.Server": {
-      "commandName": "Project",
-      "commandLineArgs": "--path \"C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync\""
-    }
-  }
-}

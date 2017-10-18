@@ -1,9 +1,0 @@
-﻿OK Binding basico
-OK Binding com stringFormat
-OK CustomControl
-OK Isolar código do websocket no Core
-OK Melhorar isolamento e configuração de uso
-OK Melhorar suporte a tipos de propriedades
-OK Suportar DataTemplate
-OK Suportar Styles
-Criar pacote Nuget
