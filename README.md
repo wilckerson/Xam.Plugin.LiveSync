@@ -1,4 +1,4 @@
-# XamarinForms LiveSync (Preview)#
+# XamarinForms LiveSync (Preview)
 
 Não perca mais tempo compilando sua aplicação para ver o resultado das suas alterações de interface XAML.
 
@@ -51,7 +51,8 @@ Crie um Issue ou me contate pelo email
 
 - Caso esteja disparando uma exception desconhecida no metodo de inicialização, verifique se o metodo Init do plugin está sendo chamado APÓS o metodo LoadApplication.
 - Quando estiver trabalhando com controles customizados, que você tenha feito ou de terceiros, e eles desaparecerem da tela durante o Livesync ou então encerrar inesperadamente o aplicativo, verifique se no cabeçalho do seu arquivo XAML você está chamando o namespace e o assembly corretamente. Exemplo:
-####Errado (Faz os controles desaparecerem ou o app encerrar)####
+
+Errado (Faz os controles desaparecerem ou o app encerrar)
 ```
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -61,7 +62,7 @@ Crie um Issue ou me contate pelo email
 </ContentPage>
 ```
 
-####Certo####
+Certo
 ```
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
