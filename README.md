@@ -17,7 +17,7 @@ Basta fazer da mesma forma que a maioria dos plugins para Xamarin Forms.
 ### 2) Chamar os códigos de inicialização ###
 
 Adicione o código abaixo de acordo com a plataforma. 
-#ATENÇÂO#: Os códigos abaixo PRECISAM ESTAR APÓS a da linha que chama o método "LoadApplication", caso contrário uma Exception será disparada.
+###ATENÇÂO:### Os códigos abaixo PRECISAM ESTAR APÓS a da linha que chama o método "LoadApplication", caso contrário uma Exception será disparada.
 
 Android/MainActivity.cs:
  
@@ -51,7 +51,7 @@ Crie um Issue ou me contate pelo email
 
 - Caso esteja disparando uma exception desconhecida no metodo de inicialização, verifique se o metodo Init do plugin está sendo chamado APÓS o metodo LoadApplication.
 - Quando estiver trabalhando com controles customizados, que você tenha feito ou de terceiros, e eles desaparecerem da tela durante o Livesync ou então encerrar inesperadamente o aplicativo, verifique se no cabeçalho do seu arquivo XAML você está chamando o namespace e o assembly corretamente. Exemplo:
-#Errado#
+####Errado (Faz os controles desaparecerem ou o app encerrar)####
 ```
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -61,7 +61,7 @@ Crie um Issue ou me contate pelo email
 </ContentPage>
 ```
 
-#Certo#
+####Certo####
 ```
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
