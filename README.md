@@ -1,4 +1,4 @@
-# XamarinForms LiveSync (Preview)#
+# XamarinForms LiveSync (Preview)
 
 Não perca mais tempo compilando sua aplicação para ver o resultado das suas alterações de interface XAML.
 
@@ -8,16 +8,25 @@ Ele funciona de dentro do seu aplicativo, suportando com isso quase tudo que sua
 
 Essa abordagem traz melhores resultados se comparado com ferramentas similares como Gorilla Player, Xamarin LivePlayer ou o Visual Studio Xaml Preview.
 
+## NuGet
+* [Xam.Plugin.LiveSync](https://www.nuget.org/packages/Xam.Plugin.LiveSync) [![NuGet](https://img.shields.io/nuget/v/Xam.Plugin.LiveSync.svg?label=NuGet)](https://www.nuget.org/packages/Xam.Plugin.LiveSync)
+
 ## Como utilizar? ##
 
 Basta fazer da mesma forma que a maioria dos plugins para Xamarin Forms.
 
-### 1) Adicionar o pacote NuGet no projeto Portable e nas plataformas Android e iOS ###
+### 1) Adicionar o pacote NuGet no projeto Portable e nas plataformas Android (Preview) e iOS (Em breve) ###
+```
+Install-Package Xam.Plugin.LiveSync
+```
 
 ### 2) Chamar os códigos de inicialização ###
 
 Adicione o código abaixo de acordo com a plataforma. 
-###ATENÇÂO:### Os códigos abaixo PRECISAM ESTAR APÓS a da linha que chama o método "LoadApplication", caso contrário uma Exception será disparada.
+
+### ATENÇÂO! 
+- Os códigos abaixo PRECISAM ESTAR APÓS a da linha que chama o método "LoadApplication", caso contrário uma Exception será disparada.
+- É necessário ter o Dot NetCore 2.0 instalado na maquina (https://www.microsoft.com/net/download/core)
 
 Android/MainActivity.cs:
  
@@ -51,7 +60,8 @@ Crie um Issue ou me contate pelo email
 
 - Caso esteja disparando uma exception desconhecida no metodo de inicialização, verifique se o metodo Init do plugin está sendo chamado APÓS o metodo LoadApplication.
 - Quando estiver trabalhando com controles customizados, que você tenha feito ou de terceiros, e eles desaparecerem da tela durante o Livesync ou então encerrar inesperadamente o aplicativo, verifique se no cabeçalho do seu arquivo XAML você está chamando o namespace e o assembly corretamente. Exemplo:
-####Errado (Faz os controles desaparecerem ou o app encerrar)####
+
+Errado (Faz os controles desaparecerem ou o app encerrar)
 ```
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -61,7 +71,7 @@ Crie um Issue ou me contate pelo email
 </ContentPage>
 ```
 
-####Certo####
+Certo
 ```
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
