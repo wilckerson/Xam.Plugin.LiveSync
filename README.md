@@ -27,6 +27,7 @@ Adicione o código abaixo de acordo com a plataforma.
 ### ATENÇÂO! 
 - Os códigos abaixo PRECISAM ESTAR APÓS a da linha que chama o método "LoadApplication", caso contrário uma Exception será disparada.
 - É necessário ter o Dot NetCore 2.0 instalado na maquina (https://www.microsoft.com/net/download/core)
+- Esse plugin só é util durante o processo de desenvolvimento, não esqueça de comentar as linhas de inicialização antes de gerar a versão Release.
 
 Android/MainActivity.cs:
  
