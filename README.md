@@ -8,11 +8,17 @@ Ele funciona de dentro do seu aplicativo, suportando com isso quase tudo que sua
 
 Essa abordagem traz melhores resultados se comparado com ferramentas similares como Gorilla Player, Xamarin LivePlayer ou o Visual Studio Xaml Preview.
 
+## NuGet
+* [Xam.Plugin.LiveSync](https://www.nuget.org/packages/Xam.Plugin.LiveSync) [![NuGet](https://img.shields.io/nuget/v/Xam.Plugin.LiveSync.svg?label=NuGet)](https://www.nuget.org/packages/Xam.Plugin.LiveSync)
+
 ## Como utilizar? ##
 
 Basta fazer da mesma forma que a maioria dos plugins para Xamarin Forms.
 
 ### 1) Adicionar o pacote NuGet no projeto Portable e nas plataformas Android (Preview) e iOS (Em breve) ###
+```
+Install-Package Xam.Plugin.LiveSync
+```
 
 ### 2) Chamar os códigos de inicialização ###
 
