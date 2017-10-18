@@ -12,7 +12,7 @@ Essa abordagem traz melhores resultados se comparado com ferramentas similares c
 
 Basta fazer da mesma forma que a maioria dos plugins para Xamarin Forms.
 
-### 1) Adicionar o pacote NuGet no projeto Portable e nas plataformas Android e iOS ###
+### 1) Adicionar o pacote NuGet no projeto Portable e nas plataformas Android (Preview) e iOS (Em breve) ###
 
 ### 2) Chamar os códigos de inicialização ###
 
