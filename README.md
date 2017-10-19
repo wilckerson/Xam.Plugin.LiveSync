@@ -60,24 +60,4 @@ Crie um Issue ou me contate pelo email
 ### Problemas comuns ###
 
 - Caso esteja disparando uma exception desconhecida no metodo de inicialização, verifique se o metodo Init do plugin está sendo chamado APÓS o metodo LoadApplication.
-- Quando estiver trabalhando com controles customizados, que você tenha feito ou de terceiros, e eles desaparecerem da tela durante o Livesync ou então encerrar inesperadamente o aplicativo, verifique se no cabeçalho do seu arquivo XAML você está chamando o namespace e o assembly corretamente. Exemplo:
-
-Errado (Faz os controles desaparecerem ou o app encerrar)
-```
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:MyAppNamespace.MyControls"              
-             x:Class="MyAppNamespace.MainPage">
-    <local:MyCustomControl />
-</ContentPage>
-```
-
-Certo
-```
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:MyAppNamespace.MyControls;assembly=MyAppNamespace"              
-             x:Class="MyAppNamespace.MainPage">
-    <local:MyCustomControl />
-</ContentPage>
-```
+- Caso você inicie o aplicativo e não veja a modal sizendo que o LiveSync está conectado, basta dar um Rebuild no projeto Portable e depois executar normalmente.
