@@ -24,11 +24,11 @@ namespace XamarinFormsLiveSync.iOS
         {
             global::Xamarin.Forms.Forms.Init();
 
-            //XamarinLivesync
-            Websockets.Ios.WebsocketConnection.Link();
-            XamarinFormsLiveSync.Core.XamlLiveSyncServer.Init("http://192.168.142.128:8161");
 
 			LoadApplication(new XamarinFormsLiveSync.App());
+
+            Xam.Plugin.LiveSync.iOS.LiveSync.Init();
+
             return base.FinishedLaunching(app, options);
         }
     }

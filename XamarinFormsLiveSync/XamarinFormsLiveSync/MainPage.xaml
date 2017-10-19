@@ -8,11 +8,11 @@
     
     <StackLayout Margin="20">
 
-        <Label Text="Xamarin LiveSync 2"/>
+        <Label Text="Xamarin LiveSync iOS"/>
 
         <Button Text="Nuget + target" BackgroundColor="{StaticResource PrimaryDark}"/>
 
-        <Entry Placeholder="Data de Nascimento" BackgroundColor="#fec70b" TextColor="#272a65" Keyboard="Numeric">
+        <Entry Placeholder="Data de Nascimento" HeightRequest="40" Keyboard="Numeric">
             <Entry.Behaviors>
                 <behaviors:DataMaskBehavior/>
             </Entry.Behaviors>

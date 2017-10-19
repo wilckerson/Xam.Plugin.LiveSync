@@ -144,6 +144,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Xam.Plugin.LiveSync.Core\Xam.Plugin.LiveSync.Core.csproj">
+      <Project>{26d24673-fe17-4582-b749-6f6ee3171c9a}</Project>
+      <Name>Xam.Plugin.LiveSync.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Xam.Plugin.LiveSync.iOS\Xam.Plugin.LiveSync.iOS.csproj">
+      <Project>{3ea328ba-1b2d-4b6d-94a7-6b6fb1a59238}</Project>
+      <Name>Xam.Plugin.LiveSync.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
+    </ProjectReference>
     <ProjectReference Include="..\XamarinFormsLiveSync\XamarinFormsLiveSync.csproj">
       <Project>{552B7789-073D-4F07-A162-5D744CB8A745}</Project>
       <Name>XamarinFormsLiveSync</Name>
