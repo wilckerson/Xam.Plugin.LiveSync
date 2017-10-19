@@ -87,16 +87,6 @@
     <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.3.4.267\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.3.4.267\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets'))" />
     <Error Condition="!Exists('..\..\packages\Xam.Plugin.LiveSync.1.0.20\build\portable-win+net45+wp80+win81+wpa81\Xam.Plugin.LiveSync.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xam.Plugin.LiveSync.1.0.20\build\portable-win+net45+wp80+win81+wpa81\Xam.Plugin.LiveSync.targets'))" />
   </Target>
-  <Import Project="..\..\packages\Xam.Plugin.LiveSync.1.0.20\build\portable-win+net45+wp80+win81+wpa81\Xam.Plugin.LiveSync.targets" Condition="Exists('..\..\packages\Xam.Plugin.LiveSync.1.0.20\build\portable-win+net45+wp80+win81+wpa81\Xam.Plugin.LiveSync.targets')" />
-  <!--<Target Name="BeforeBuild">
-    <Message Text="Xam.Plugin.LiveSync: Generate LiveSyncConfig with server host" Importance="high" />
-    <Exec Command="dotnet %22C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0/Xam.Plugin.LiveSync.Initializer.dll%22" />
-    <Message Text="Xam.Plugin.LiveSync: File generated at C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0/LiveSyncConfig.cs" Importance="high" />
-    <ItemGroup>
-      <Compile Include="C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.Initializer\bin\Debug\netcoreapp2.0/LiveSyncConfig.cs" />
-    </ItemGroup>
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>-->
-  <!--<Import Project="C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.targets" Condition="Exists('C:\Projetos\XamarinFormsLiveSync\Xam.Plugin.LiveSync.targets')" />-->
+  <!--<Import Project="..\..\packages\Xam.Plugin.LiveSync.1.0.20\build\portable-win+net45+wp80+win81+wpa81\Xam.Plugin.LiveSync.targets" Condition="Exists('..\..\packages\Xam.Plugin.LiveSync.1.0.20\build\portable-win+net45+wp80+win81+wpa81\Xam.Plugin.LiveSync.targets')" />-->
+  
 </Project>

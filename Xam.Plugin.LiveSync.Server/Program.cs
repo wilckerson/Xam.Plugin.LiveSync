@@ -25,15 +25,31 @@ namespace Xam.Plugin.LiveSync.Server
                 //using (StreamWriter debugLogFile = new StreamWriter($"{directory}/Server_Debug.log"))
                 {
                     PATH_TO_WATCH = GetArgsValue<string>(args, "--project-path", "").Trim();
+                    var portArg = GetArgsValue<string>(args, "--port", "9759").Trim();
                     var configFilePath = GetArgsValue<string>(args, "--config-path", "").Trim();
+
+                    if (string.IsNullOrEmpty(PATH_TO_WATCH))
+                    {
+                        Console.WriteLine("Xam.Plugin.LiveSync.Server:");
+                        Console.WriteLine("The argument --project-path is required. Set it to the root location where your XAML files are.");
+                        Console.ReadKey();
+                        return;
+                    }
 
                     //debugLogFile.WriteLine($"{DateTime.Now}: --project-path {PATH_TO_WATCH}");
                     //debugLogFile.WriteLine($"{DateTime.Now}: --config-path {configFilePath}");
 
-                    var hostText = FileHelper.GetFileContent(configFilePath);
-                    HOST = hostText;
+                    if (string.IsNullOrEmpty(configFilePath))
+                    {
+                        HOST = $"{GetIPAddress()}:{portArg}";
+                    }
+                    else
+                    {
+                        var hostText = FileHelper.GetFileContent(configFilePath);
+                        HOST = hostText;
+                    }
                     
-                    var hostPort = hostText.Split(":").LastOrDefault();
+                    var hostPort = HOST.Split(":").LastOrDefault();
                     int.TryParse(hostPort, out PORT);
 
                     //debugLogFile.WriteLine($"{DateTime.Now}: host {HOST}");

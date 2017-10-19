@@ -7,23 +7,23 @@ namespace Xam.Plugin.LiveSync.Droid
 {
     public class LiveSync: XamlLiveSyncServerCore
     {
-        private LiveSync()
+        private LiveSync(string host)
         {
-            var host = GetHost();
             Websockets.Droid.WebsocketConnection.Link();
             base.InitWebsocket(host);
         }
 
         static LiveSync instance;
-        public static void Init()
+        public static void Init(string host = null)
         {
             if (instance == null)
             {
-                instance = new LiveSync();
+                host = host ?? GetHost();
+                instance = new LiveSync(host);
             }
         }
 
-        private string GetHost()
+        static string GetHost()
         {
             if(Xamarin.Forms.Application.Current == null)
             {

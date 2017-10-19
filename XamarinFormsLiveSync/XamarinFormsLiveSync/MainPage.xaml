@@ -3,14 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:XamarinFormsLiveSync"
                xmlns:behaviors="clr-namespace:XamarinFormsLiveSync.Behaviors"
-             x:Class="XamarinFormsLiveSync.MainPage">
+             x:Class="XamarinFormsLiveSync.MainPage"
+             Title="App 2">
     <!--xmlns:seg="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions"-->
     
     <StackLayout Margin="20">
 
-        <Label Text="Xamarin LiveSync iOS"/>
+        <Label Text="Xamarin Forms LiveSync andoird + ios" HorizontalOptions="Center"/>
 
-        <Button Text="Nuget + target" BackgroundColor="{StaticResource PrimaryDark}"/>
+        <Button Text="Nuget + target" BackgroundColor="{StaticResource PrimaryDark}" TextColor="Red"/>
 
         <Entry Placeholder="Data de Nascimento" HeightRequest="40" Keyboard="Numeric">
             <Entry.Behaviors>
@@ -36,35 +37,20 @@
         <!--<Label Text="20099fd" Rotation="10" AnchorX="0" VerticalOptions="Center" HorizontalOptions="Center"/>-->
         <!--<Button Text="{Binding Prop }"  />-->         
         <!--<Button  TextColor="Red" Clicked="Button_Clicked" Text="pppp" />-->
+
+       
+                <!--<Frame Margin="0,20,0,0">
+            <StackLayout>
+                    <Entry Placeholder="Usuário" Text="{Binding Username}"/>
+                    <Entry Placeholder="Senha" IsPassword="True" Text="{Binding Password}"/>
+                    <Button Text="Entrar" Command="{Binding Login}" BackgroundColor="#3C9D61" TextColor="White"/>
+                    <ActivityIndicator IsRunning="True" IsVisible="{Binding IsLoading}"  Color="#FFAB00"/>
+            </StackLayout>
+        </Frame>-->
+           
     </StackLayout>
     
-    <!--<Grid BackgroundColor="#9E1521">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="10*"/>
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10*"/>
-            <ColumnDefinition Width="80*"/>
-            <ColumnDefinition Width="10*"/>
-        </Grid.ColumnDefinitions>
-        <StackLayout Margin="0,16,0,0" Grid.Column="1" VerticalOptions="End" HorizontalOptions="Center">
-            <Image Source="edebeLogoWhite" WidthRequest="128" Aspect="AspectFit"/>
-            <Label Text="EdebêEdu Avaliações" FontSize="24" TextColor="White" HorizontalOptions="Center" />
-        </StackLayout>
-
-        <Frame Margin="0,32,0,0"  Grid.Column="1" Grid.Row="1" VerticalOptions="Start">
-            
-            <StackLayout>
-                <Entry Placeholder="Usuário" Text="{Binding Username}"/>
-                <Entry Placeholder="Senha" IsPassword="True" Text="{Binding Password}"/>
-                <Button Text="Entrar" Command="{Binding Login}" BackgroundColor="#3C9D61" TextColor="White"/>
-                <ActivityIndicator IsRunning="True" IsVisible="{Binding IsLoading}"  Color="#FFAB00"/>
-            </StackLayout>
-        </Frame>
-    </Grid>-->
+    
 
 
 </ContentPage>

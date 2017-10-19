@@ -25,7 +25,7 @@ namespace Xam.Plugin.LiveSync.Initializer
                     var projectPath = GetArgsValue<string>(args, "--project-path", "").Trim();// "C:\\Projetos\\XamarinFormsLiveSync\\XamarinFormsLiveSync\\XamarinFormsLiveSync");
                     var configPath = GetArgsValue<string>(args, "--config-path", "").Trim();// "C:\\Projetos\\XamarinFormsLiveSync\\Xam.Plugin.LiveSync.Initializer\\bin\\Debug\\netcoreapp2.0\\LiveSync.host");
 
-                    if(projectPath.Last() == '\\')
+                    if (projectPath.Last() == '\\')
                     {
                         projectPath = projectPath.Substring(0, projectPath.Length - 1);
                     }
@@ -54,7 +54,7 @@ namespace Xam.Plugin.LiveSync.Initializer
             }
             catch (Exception ex)
             {
-                
+
 
                 using (StreamWriter writetext = new StreamWriter($"{directory}/Exception_{DateTime.Now}.log"))
                 {
@@ -87,15 +87,21 @@ namespace Xam.Plugin.LiveSync.Initializer
 
                     if (int.TryParse(content, out int processId))
                     {
-                        //Tenta encessar o processo
                         try
                         {
                             var existingProc = Process.GetProcessById(processId);
+                            if (!existingProc.HasExited)
+                            {
+                                return;
+                            }
+
+                            //Tenta encerrar o processo
                             existingProc?.Kill();
+
 
                             Console.WriteLine("Old server killed");
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                         }
 
