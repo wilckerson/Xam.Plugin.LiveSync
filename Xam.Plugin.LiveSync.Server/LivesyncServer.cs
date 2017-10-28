@@ -55,7 +55,12 @@ namespace Xam.Plugin.LiveSync.Server
                     path = newPath;
                 }
 
-                if (!path.EndsWith(".xaml") || path.Contains(".#")) { return; }
+                if(path.Contains(".xaml") && path.Contains(".#")){
+                    var newPath = path.Replace(".#","");
+                    path = newPath;
+                }
+
+                if (!path.EndsWith(".xaml")) { return; }
 
                 //------------------------------------------------------------
                 //O evento OnChange está sendo chamado duas vezes sempre que 

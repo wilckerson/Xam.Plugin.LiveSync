@@ -11,9 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E3A0F09D-9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{C5FA91ED-E5E3-43CE-93D8-92901D890B41}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xam.Plugin.LiveSync.Server", "Xam.Plugin.LiveSync.Server\Xam.Plugin.LiveSync.Server.csproj", "{158469BD-6D60-455A-8728-3D585AC68AD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xam.Plugin.LiveSync.Server", "Xam.Plugin.LiveSync.Server\Xam.Plugin.LiveSync.Server.csproj", "{158469BD-6D60-455A-8728-3D585AC68AD6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xam.Plugin.LiveSync.Initializer", "Xam.Plugin.LiveSync.Initializer\Xam.Plugin.LiveSync.Initializer.csproj", "{F86FD2A8-B296-470B-907A-63EE97AFB96C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xam.Plugin.LiveSync.Initializer", "Xam.Plugin.LiveSync.Initializer\Xam.Plugin.LiveSync.Initializer.csproj", "{F86FD2A8-B296-470B-907A-63EE97AFB96C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{C728A7DA-DEE0-41A7-A584-97FF9D08D0BA}"
 EndProject

@@ -33,6 +33,11 @@ namespace Xam.Plugin.LiveSync.iOS
             string assFullName = Xamarin.Forms.Application.Current.GetType().Assembly.GetName().FullName;
             var assemblyQualifiedName = $"Xam.Plugin.LiveSync.LiveSyncConfig, {assFullName}";
             var type = Type.GetType(assemblyQualifiedName);
+
+            if(type==null){
+                throw new Exception("The class Xam.Plugin.LiveSync.LiveSyncConfig was not found");
+            }
+
             var fieldInfo = type.GetField("HOST");
             var value = fieldInfo.GetValue(null).ToString();
 

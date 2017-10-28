@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Xam.Plugin.LiveSync</id>
-    <version>1.0.30</version>
+    <version>1.0.31</version>
     <title>Xamarin Forms XAML LiveSync</title>
     <authors>Wilckerson Ganda, Eder Moises</authors>
     <owners>Wilckerson Ganda</owners>

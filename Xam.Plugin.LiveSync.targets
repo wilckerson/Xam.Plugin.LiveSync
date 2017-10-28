@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Target Name="BeforeBuild">
 	<PropertyGroup>
-    	<pkgNameVersion>Xam.Plugin.LiveSync.1.0.30</pkgNameVersion>
+    	<pkgNameVersion>Xam.Plugin.LiveSync.1.0.31</pkgNameVersion>
   	</PropertyGroup>
 
     <Message Text="Xam.Plugin.LiveSync: Generate LiveSyncConfig with server host" Importance="high" />
