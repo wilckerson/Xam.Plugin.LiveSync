@@ -61,10 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="NativeServices\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LiveSync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NativeServices\ToastService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

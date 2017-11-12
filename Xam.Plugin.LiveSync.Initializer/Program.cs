@@ -102,7 +102,7 @@ namespace Xam.Plugin.LiveSync.Initializer
 
               Console.WriteLine("Old server killed");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
 

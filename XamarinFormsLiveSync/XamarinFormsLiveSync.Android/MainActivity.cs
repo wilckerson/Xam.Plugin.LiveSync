@@ -31,7 +31,7 @@ namespace XamarinFormsLiveSync.Droid
 
             LoadApplication(new App());
 
-            Xam.Plugin.LiveSync.Droid.LiveSync.Init("http://192.168.0.10:9759");
+      Xam.Plugin.LiveSync.Droid.LiveSync.Init();//"http://192.168.0.10:9759");
 
         }
     }
