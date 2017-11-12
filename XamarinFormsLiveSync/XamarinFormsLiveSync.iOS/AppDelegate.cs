@@ -27,7 +27,7 @@ namespace XamarinFormsLiveSync.iOS
 
 			LoadApplication(new XamarinFormsLiveSync.App());
 
-            Xam.Plugin.LiveSync.iOS.LiveSync.Init("http://192.168.106.186:9759");
+      Xam.Plugin.LiveSync.iOS.LiveSync.Init();//"http://192.168.106.186:9759");
 
             return base.FinishedLaunching(app, options);
         }

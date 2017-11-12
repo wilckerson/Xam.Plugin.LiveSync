@@ -9,7 +9,8 @@
     
     <StackLayout Margin="20">
 
-        <Label Text="Xamarin Forms LiveSync 7" HorizontalOptions="Center"/>
+    
+        <Label Text="Xamarin Forms LiveSync =)" HorizontalOptions="Center"/>
 
         <Button Text="Nuget + target" BackgroundColor="{StaticResource PrimaryDark}" TextColor="Red"/>
 

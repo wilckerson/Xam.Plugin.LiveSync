@@ -6,13 +6,11 @@
 
     <Message Text="Xam.Plugin.LiveSync: Generate LiveSyncConfig with server host" Importance="high" />
  
-
-    <Exec Command="dotnet %22$(SolutionDir)packages\$(pkgNameVersion)\server\Xam.Plugin.LiveSync.Initializer.dll%22 --project-path %22$(ProjectDir) %22 --server-path %22$(SolutionDir)packages\$(pkgNameVersion)\server\Xam.Plugin.LiveSync.Server.dll%22 --config-path %22$(SolutionDir)packages\$(pkgNameVersion)\server\LiveSync.host%22"/>
-
+    <Exec Command="dotnet %22/Users/eder/Desktop/Dev/Xam.Plugin.LiveSync/Xam.Plugin.LiveSync.Initializer/bin/Debug/netcoreapp2.0/Xam.Plugin.LiveSync.Initializer.dll%22 --server-path %22/Users/eder/Desktop/Dev/Xam.Plugin.LiveSync/Xam.Plugin.LiveSync.Server/bin/Debug/netcoreapp2.0/Xam.Plugin.LiveSync.Server.dll%22 --project-path %22/Users/eder/Desktop/Dev/Xam.Plugin.LiveSync/XamarinFormsLiveSync%22"/>
 
     <Message Text="Xam.Plugin.LiveSync: The config file was generated" Importance="high" />
     <ItemGroup>
-      <Compile Include="$(SolutionDir)packages\$(pkgNameVersion)\server\LiveSyncConfig.cs" />
+      <Compile Include="/Users/eder/Desktop/Dev/Xam.Plugin.LiveSync/Xam.Plugin.LiveSync.Initializer/bin/Debug/netcoreapp2.0/LiveSyncConfig.cs" />
     </ItemGroup>
 
   </Target>
