@@ -53,7 +53,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
 
             if (type == null)
             {
-                throw new Exception($"Error on namespace declaration for {node.Name}");
+                Application.Current.MainPage.DisplayAlert("Livesync", $"Error on namespace declaration for {node.Name}", "Ok");
             }
 
             if (type == typeof(DataTemplate))
@@ -293,6 +293,11 @@ namespace Xam.Plugin.LiveSync.XamlParser
                             prop.SetValue(obj, resourceValue);
                             continue;
                         }
+                        else
+                        {
+                            continue;
+                        }
+
                     }
 
                     //Enum
