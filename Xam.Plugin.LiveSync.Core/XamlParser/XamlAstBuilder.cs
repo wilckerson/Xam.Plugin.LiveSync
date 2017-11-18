@@ -25,14 +25,12 @@ namespace Xam.Plugin.LiveSync.XamlParser
             defaultConverterAssemblyQualifiedName = new LayoutOptionsConverter().GetType().AssemblyQualifiedName;
         }
 
-        public object BuildNode(AstNode node)
+        Type GetTypeFromName(string name, string namespaceName = null)
         {
-            if (node == null) return null;
-
             Type type = null;
-            if (!string.IsNullOrEmpty(node.Namespace) && node.Namespace.Trim().StartsWith("clr-namespace"))
+            if (!string.IsNullOrEmpty(namespaceName) && namespaceName.Trim().StartsWith("clr-namespace"))
             {
-                var parts = node.Namespace.Split(';');
+                var parts = namespaceName.Split(';');
                 var usingNamespace = parts[0].Replace("clr-namespace:", string.Empty).Trim();
                 var assembly = parts.ElementAtOrDefault(1)?.Replace("assembly=", string.Empty).Trim();
 
@@ -41,19 +39,39 @@ namespace Xam.Plugin.LiveSync.XamlParser
                     assembly = usingNamespace.Split('.').FirstOrDefault();
                 }
 
-                var assemblyQualifiedName = $"{usingNamespace}.{node.Name}, {assembly}";
+                var assemblyQualifiedName = $"{usingNamespace}.{name}, {assembly}";
 
                 type = Type.GetType(assemblyQualifiedName);
             }
             else
             {
-                var assemblyQualifiedName = defaultAssemblyQualifiedName.Replace("ContentPage", node.Name);
+                var assemblyQualifiedName = defaultAssemblyQualifiedName.Replace("ContentPage", name);
                 type = Type.GetType(assemblyQualifiedName);
             }
 
             if (type == null)
             {
+                var n = namespaceName ?? "System";
+                var assemblyQualifiedName = $"{n}.{name}";
+                type = Type.GetType(assemblyQualifiedName);
+            }
+
+            return type;
+        }
+
+        public object BuildNode(AstNode node, Type type = null)
+        {
+            if (node == null) return null;
+
+            if (type == null)
+            {
+                type = GetTypeFromName(node.Name, node.Namespace);
+            }
+
+            if (type == null)
+            {
                 Application.Current.MainPage.DisplayAlert("Livesync", $"Error on namespace declaration for {node.Name}", "Ok");
+                return null;
             }
 
             if (type == typeof(DataTemplate))
@@ -81,6 +99,28 @@ namespace Xam.Plugin.LiveSync.XamlParser
             return obj;
         }
 
+        AstNode GetNodeToBuild(AstNode node)
+        {
+            AstNode nodeToBuild = node;
+            if (node.Name == "OnIdiom")
+            {
+                var v = ExtractValueFromOnIdiom(node);
+                if (v != null && v is AstNode)
+                {
+                    nodeToBuild = (AstNode)v;
+                }
+            }
+            else if (node.Name == "OnPlatform")
+            {
+                var v = ExtractValueFromOnPlatform(node);
+                if (v != null && v is AstNode)
+                {
+                    nodeToBuild = (AstNode)v;
+                }
+            }
+            return nodeToBuild;
+        }
+
         void ApplyChildrens(Type type, object obj, List<AstNode> childrens)
         {
             if (childrens.Count > 0)
@@ -91,7 +131,8 @@ namespace Xam.Plugin.LiveSync.XamlParser
                 {
                     foreach (var children in childrens)
                     {
-                        var subObj = BuildNode(children);
+                        var nodeToBuild = GetNodeToBuild(children);
+                        var subObj = BuildNode(nodeToBuild);
                         if (subObj == null) { continue; }
                         var layout = (IList<View>)propChildren.GetValue(obj);
                         layout.Add((subObj as View));
@@ -105,7 +146,8 @@ namespace Xam.Plugin.LiveSync.XamlParser
                     {
                         foreach (var children in childrens)
                         {
-                            var subObj = BuildNode(children);
+                            var nodeToBuild = GetNodeToBuild(children);
+                            var subObj = BuildNode(nodeToBuild);
                             if (subObj == null) { continue; }
 
                             var layout = (IList<View>)prop2Children.GetValue(obj);
@@ -118,7 +160,10 @@ namespace Xam.Plugin.LiveSync.XamlParser
                         var propContent = type.GetRuntimeProperty("Content");
                         if (propContent != null)
                         {
-                            var subObj = BuildNode(childrens.FirstOrDefault());
+                            AstNode children = childrens.FirstOrDefault();
+
+                            var nodeToBuild = GetNodeToBuild(children);
+                            var subObj = BuildNode(nodeToBuild);
                             if (subObj != null)
                             {
                                 propContent.SetValue(obj, subObj);
@@ -128,10 +173,41 @@ namespace Xam.Plugin.LiveSync.XamlParser
                 }
             }
         }
+        object ExtractValueFromOnIdiom(AstNode onPlatformNode)
+        {
+            var currentIdiom = Device.Idiom.ToString();
+            onPlatformNode.AttributeProperties.TryGetValue("TypeArguments", out string typeDescription);
+
+            string valuePlatformDescription = null;
+            if (onPlatformNode.ElementProperties.Any())
+            {
+                var elmProp = onPlatformNode.ElementProperties.FirstOrDefault(f =>f.Key == currentIdiom);
+                return elmProp.Value.FirstOrDefault();
+            }
+            else
+            {
+                onPlatformNode.AttributeProperties.TryGetValue(currentIdiom, out valuePlatformDescription);
+            }
+
+            if (string.IsNullOrEmpty(typeDescription) || string.IsNullOrEmpty(valuePlatformDescription))
+            {
+                return null;
+            }
+
+            var idx = typeDescription.IndexOf(':');
+            if (idx != -1)
+            {
+                typeDescription = typeDescription.Substring(idx + 1);
+            }
+
+            var type = GetTypeFromName(typeDescription);
+            object value = ResolveValueForPropertyType(type, valuePlatformDescription);
+
+            return value;
+        }
 
         object ExtractValueFromOnPlatform(AstNode onPlatformNode)
         {
-            object value = null;
             string currentPlatform = Device.RuntimePlatform;
             onPlatformNode.AttributeProperties.TryGetValue("TypeArguments", out string typeDescription);
 
@@ -148,6 +224,10 @@ namespace Xam.Plugin.LiveSync.XamlParser
                     {
                         valuePlatformDescription = child.AttributeProperties["Value"];
                     }
+                    else if (child.Childrens.Any())
+                    {
+                        return child.Childrens.FirstOrDefault();
+                    }
                     else
                     {
                         valuePlatformDescription = child.TextContent;
@@ -162,27 +242,18 @@ namespace Xam.Plugin.LiveSync.XamlParser
 
             if (string.IsNullOrEmpty(typeDescription) || string.IsNullOrEmpty(valuePlatformDescription))
             {
-                return value;
+                return null;
             }
 
-            if (typeDescription.StartsWith("x:"))
+            var idx = typeDescription.IndexOf(':');
+            if (idx != -1)
             {
-                var type = Type.GetType(typeDescription.Replace("x:", "System."));
-                if (type != null)
-                {
-                    value = Convert.ChangeType(valuePlatformDescription, type);
-                }
+                typeDescription = typeDescription.Substring(idx + 1);
             }
-            else
-            {
-                var converterType = TryGetTypeConverter(typeDescription);
 
-                if (converterType != null)
-                {
-                    var typeConverter = (TypeConverter)Activator.CreateInstance(converterType);
-                    value = typeConverter.ConvertFromInvariantString(valuePlatformDescription);
-                }
-            }
+            var type = GetTypeFromName(typeDescription);
+            object value = ResolveValueForPropertyType(type, valuePlatformDescription);
+
             return value;
         }
 
@@ -190,7 +261,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
         {
             foreach (var elmProp in node.ElementProperties)
             {
-                if (elmProp.Key == "Content")
+                if (elmProp.Key == "Content" || elmProp.Key == "Children")
                 {
                     ApplyChildrens(type, obj, elmProp.Value);
                     continue;
@@ -206,6 +277,10 @@ namespace Xam.Plugin.LiveSync.XamlParser
                     if (item.Name == "OnPlatform")
                     {
                         subObj = ExtractValueFromOnPlatform(item);
+                    }
+                    else if (item.Name == "OnIdiom")
+                    {
+                        subObj = ExtractValueFromOnIdiom(item);
                     }
                     else
                     {
@@ -292,6 +367,50 @@ namespace Xam.Plugin.LiveSync.XamlParser
             return converterType;
         }
 
+        object ResolveValueForPropertyType(Type type, string value)
+        {
+            //Enum
+            if (type.GetTypeInfo().IsEnum)
+            {
+                var r = Enum.Parse(type, value);
+                return r;
+            }
+
+            //Propriedades com TypeConverter (Tipo + TypeConverter || Tipo + Converter)
+            if (type.GetTypeInfo().IsSubclassOf(typeof(TypeConverter)))
+            {
+                var typeConverter = (TypeConverter)Activator.CreateInstance(type);
+                var v = typeConverter.ConvertFromInvariantString(value);
+                return v;
+            }
+            else if (type.Namespace != "System") //Tipos primitivos não possuem Converter
+            {
+                var converterType = TryGetTypeConverter(type.Name);
+
+                if (converterType != null)
+                {
+                    var typeConverter = (TypeConverter)Activator.CreateInstance(converterType);
+                    var v = typeConverter.ConvertFromInvariantString(value);
+                    return v;
+                }
+            }
+
+            //TimeSpan
+            if (type == typeof(TimeSpan))
+            {
+                var d = double.Parse(value);
+                var tspan = TimeSpan.FromMilliseconds(d);
+                return tspan;
+            }
+
+            //Nulabbles
+            Type t = Nullable.GetUnderlyingType(type) ?? type;
+
+            //Outros
+            var resolvedValue = Convert.ChangeType(value, t);
+            return resolvedValue;
+        }
+
         void ApplyAttributes(Type type, object obj, AstNode node)
         {
 
@@ -315,7 +434,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
                     //Propriedades
                     var prop = type.GetRuntimeProperty(attr.Key);
                     if (prop == null) { continue; }
-                    var propTypeinfo = prop.PropertyType.GetTypeInfo();
+                    //var propTypeinfo = prop.PropertyType.GetTypeInfo();
 
                     //Propriedades com Binding
                     if (attr.Value.StartsWith("{") && attr.Value.Contains("Binding") && obj is BindableObject)
@@ -378,10 +497,6 @@ namespace Xam.Plugin.LiveSync.XamlParser
 
                             if (onIdiomType.IsConstructedGenericType && onIdiomType.GetGenericTypeDefinition() == typeof(Xamarin.Forms.OnIdiom<>))
                             {
-
-                                //var onIdiom = Activator.CreateInstance(typeof(Xamarin.Forms.OnIdiom<>).MakeGenericType(onIdiomType));
-
-                                //var onIdiom = (Xamarin.Forms.OnIdiom<>)resourceValue;
                                 object idiomValue = null;
 
                                 switch (Device.Idiom)
@@ -411,34 +526,6 @@ namespace Xam.Plugin.LiveSync.XamlParser
                                 prop.SetValue(obj, idiomValue);
                                 continue;
                             }
-                            else
-                            {
-                                continue;
-                            }
-
-
-                        }
-                    }
-
-                    //Enum
-                    if (propTypeinfo.IsEnum)
-                    {
-                        var r = Enum.Parse(prop.PropertyType, attr.Value);
-                        prop.SetValue(obj, r);
-                        continue;
-                    }
-
-                    //Propriedades com TypeConverter (Tipo + TypeConverter || Tipo + Converter)
-                    if (prop.PropertyType.Namespace != "System") //Tipos primitivos não possuem Converter
-                    {
-                        var converterType = TryGetTypeConverter(prop.PropertyType.Name);
-
-                        if (converterType != null)
-                        {
-                            var typeConverter = (TypeConverter)Activator.CreateInstance(converterType);
-                            var v = typeConverter.ConvertFromInvariantString(attr.Value);
-                            prop.SetValue(obj, v);
-                            continue;
                         }
                     }
 
@@ -453,21 +540,9 @@ namespace Xam.Plugin.LiveSync.XamlParser
                         continue;
                     }
 
-                    //TimeSpan
-                    if (prop.PropertyType == typeof(TimeSpan))
-                    {
-                        var d = double.Parse(attr.Value);
-                        var tspan = TimeSpan.FromMilliseconds(d);
-                        prop.SetValue(obj, tspan);
-                        continue;
-                    }
+                    var resolvedValue = ResolveValueForPropertyType(prop.PropertyType, attr.Value);
 
-                    //Nulabbles
-                    Type t = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
-
-                    //Outros
-                    var convertedValue = Convert.ChangeType(attr.Value, t);
-                    prop.SetValue(obj, convertedValue);
+                    prop.SetValue(obj, resolvedValue);
 
                 }
                 catch (Exception ex)

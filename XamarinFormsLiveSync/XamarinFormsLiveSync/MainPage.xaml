@@ -5,14 +5,54 @@
                xmlns:behaviors="clr-namespace:XamarinFormsLiveSync.Behaviors"
              x:Class="XamarinFormsLiveSync.MainPage"
              Title="App 2">
+    <!--<ContentPage.Content>-->
+        <!--<OnIdiom x:TypeArguments="View">
+            <OnIdiom.Phone>
+                <Label Text="Phone2"/>
+            </OnIdiom.Phone>
+            <OnIdiom.Tablet>
+                <Label Text="Tablet"/>
+            </OnIdiom.Tablet>
+        </OnIdiom>-->
+        <!--<OnPlatform x:TypeArguments="View">
+            <On Platform="Android">
+                <StackLayout>
+                    <Label Text="Android Label 1"/>
+                    <Label Text="Android Label 2"/>
+                </StackLayout>
+            </On>
+            <On Platform="iOS">
+                <Label Text="iOS Label"/>
+            </On>
+        </OnPlatform>-->
+    <!--</ContentPage.Content>-->
     <!--xmlns:seg="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions"-->
-    
+
     <StackLayout Margin="20">
-        
-        <Label Text="Xamarin Forms LiveSync =)" HorizontalOptions="Center">
+        <StackLayout.Children>
+            <OnPlatform x:TypeArguments="View">
+            <On Platform="Android">
+                <StackLayout>
+                    <Label Text="Android Label 1"/>
+                    <Label Text="Android Label 2b"/>
+                </StackLayout>
+            </On>
+            <On Platform="iOS">
+                <Label Text="iOS Label"/>
+            </On>
+        </OnPlatform>
+        </StackLayout.Children>
+        <!--<StackLayout.BackgroundColor>
+            <OnIdiom x:TypeArguments="Color">
+                <OnIdiom.Phone>Green</OnIdiom.Phone>
+                <OnIdiom.Tablet>Black</OnIdiom.Tablet>
+            </OnIdiom>
+        </StackLayout.BackgroundColor>-->
+
+        <!--<Label Text="Xamarin Forms LiveSync =)" HorizontalOptions="Center">
             <Label.TextColor>
                 <OnPlatform x:TypeArguments="Color">
-                    <On Platform="Android">Blue</On>
+                    <On Platform="Android">Red</On>
                     <On Platform="iOS" Value="Blue"/>
                 </OnPlatform>
             </Label.TextColor>
@@ -22,7 +62,7 @@
             <Label.Margin>
                 <OnPlatform x:TypeArguments="Thickness" Android="10" iOS="0"/>
             </Label.Margin>
-        </Label>              
+        </Label>-->
 
         <!--<Button Text="Nuget + target" BackgroundColor="{StaticResource PrimaryDark}" TextColor="Red"/>
 
@@ -31,7 +71,7 @@
                 <behaviors:DataMaskBehavior/>
             </Entry.Behaviors>
         </Entry>-->
-        
+
         <!--<seg:SegmentedControl x:Name="SegControl" TintColor="#007AFF" SelectedSegment="0">
             <seg:SegmentedControl.Children>
                 <seg:SegmentedControlOption Text="Tab 1" />
@@ -40,19 +80,19 @@
                 <seg:SegmentedControlOption Text="Tab 4" />
             </seg:SegmentedControl.Children>
         </seg:SegmentedControl>-->
-         
+
         <!--<Label Text="{Binding Prop, StringFormat='format: {0}'}"
                TextColor="Blue"
                VerticalOptions="Center" 
                HorizontalOptions="Center" />-->
- 
+
         <!--<local:CustomControl HorizontalOptions="End" />-->
         <!--<Label Text="20099fd" Rotation="10" AnchorX="0" VerticalOptions="Center" HorizontalOptions="Center"/>-->
-        <!--<Button Text="{Binding Prop }"  />-->         
+        <!--<Button Text="{Binding Prop }"  />-->
         <!--<Button  TextColor="Red" Clicked="Button_Clicked" Text="pppp" />-->
 
-       
-                <!--<Frame Margin="0,20,0,0">
+
+        <!--<Frame Margin="0,20,0,0">
             <StackLayout>
                     <Entry Placeholder="Usuário" Text="{Binding Username}"/>
                     <Entry Placeholder="Senha" IsPassword="True" Text="{Binding Password}"/>
@@ -60,10 +100,6 @@
                     <ActivityIndicator IsRunning="True" IsVisible="{Binding IsLoading}"  Color="#FFAB00"/>
             </StackLayout>
         </Frame>-->
-           
+
     </StackLayout>
-    
-    
-
-
 </ContentPage>
