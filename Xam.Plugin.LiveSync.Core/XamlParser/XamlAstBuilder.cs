@@ -59,7 +59,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
             return type;
         }
 
-        public object BuildNode(AstNode node, Type type = null)
+        public object BuildNode(AstNode node, Type type = null, object[] constructorArgs = null)
         {
             if (node == null) return null;
 
@@ -90,7 +90,15 @@ namespace Xam.Plugin.LiveSync.XamlParser
                 return new ViewCell() { View = (subObj as View) };
             }
 
-            var obj = Activator.CreateInstance(type);
+            object obj = null;
+            if (constructorArgs != null)
+            {
+                obj = Activator.CreateInstance(type, constructorArgs);
+            }
+            else
+            {
+                obj = Activator.CreateInstance(type);
+            }
             ApplyAttributes(type, obj, node);
             ApplyAttachedProperties(type, obj, node);
             ApplyElementProperties(type, obj, node);
@@ -125,6 +133,17 @@ namespace Xam.Plugin.LiveSync.XamlParser
         {
             if (childrens.Count > 0)
             {
+                //if (type == typeof(ResourceDictionary))
+                //{
+                //    foreach (var children in childrens)
+                //    {
+                //        var subObj = BuildNode(children);
+                //        if (subObj == null) { continue; }
+                //        ResourceDictionary dic = (ResourceDictionary)obj;
+                //        dic.Add((subObj as Style));
+                //    }
+                //    return;
+                //}
 
                 var propChildren = type.GetTypeInfo().GetDeclaredProperty("Children");
                 if (propChildren != null)
@@ -181,7 +200,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
             string valuePlatformDescription = null;
             if (onPlatformNode.ElementProperties.Any())
             {
-                var elmProp = onPlatformNode.ElementProperties.FirstOrDefault(f =>f.Key == currentIdiom);
+                var elmProp = onPlatformNode.ElementProperties.FirstOrDefault(f => f.Key == currentIdiom);
                 return elmProp.Value.FirstOrDefault();
             }
             else
@@ -485,15 +504,22 @@ namespace Xam.Plugin.LiveSync.XamlParser
 
                         //Busca o estilo na pagina
                         var resDic = (rootPage as VisualElement).Resources;
+                        object resource = null;
                         if (resDic != null && resDic.TryGetValue(resourcePath, out object pageResourceValue))
                         {
-                            prop.SetValue(obj, pageResourceValue);
-                            continue;
+                            //prop.SetValue(obj, pageResourceValue);
+                            //continue;
+                            resource = pageResourceValue;
                         }
                         //Caso contrário busca o estilo global
                         else if (Application.Current.Resources != null && Application.Current.Resources.TryGetValue(resourcePath, out object resourceValue))
                         {
-                            var onIdiomType = resourceValue.GetType();
+                            resource = resourceValue;
+                        }
+
+                        if(resource != null)
+                        {
+                            var onIdiomType = resource.GetType();
 
                             if (onIdiomType.IsConstructedGenericType && onIdiomType.GetGenericTypeDefinition() == typeof(Xamarin.Forms.OnIdiom<>))
                             {
@@ -505,17 +531,17 @@ namespace Xam.Plugin.LiveSync.XamlParser
                                     case TargetIdiom.Phone:
 
                                         var propInf = onIdiomType.GetRuntimeProperty("Phone");
-                                        idiomValue = propInf.GetValue(resourceValue);
+                                        idiomValue = propInf.GetValue(resource);
                                         break;
 
                                     case TargetIdiom.Desktop:
                                         var propInf2 = onIdiomType.GetRuntimeProperty("Desktop");
-                                        idiomValue = propInf2.GetValue(resourceValue);
+                                        idiomValue = propInf2.GetValue(resource);
                                         break;
 
                                     case TargetIdiom.Tablet:
                                         var propInf3 = onIdiomType.GetRuntimeProperty("Tablet");
-                                        idiomValue = propInf3.GetValue(resourceValue);
+                                        idiomValue = propInf3.GetValue(resource);
                                         break;
 
                                     case TargetIdiom.Unsupported:
@@ -526,6 +552,25 @@ namespace Xam.Plugin.LiveSync.XamlParser
                                 prop.SetValue(obj, idiomValue);
                                 continue;
                             }
+                            else if (onIdiomType.IsConstructedGenericType && onIdiomType.GetGenericTypeDefinition() == typeof(Xamarin.Forms.OnPlatform<>))
+                            {
+                                object idiomValue = null;
+
+                                var propInf = onIdiomType.GetRuntimeProperty(Device.RuntimePlatform);
+                                idiomValue = propInf.GetValue(resource);
+
+                                prop.SetValue(obj, idiomValue);
+                                continue;
+                            }
+                            else
+                            {
+                                prop.SetValue(obj, resource);
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            continue;
                         }
                     }
 

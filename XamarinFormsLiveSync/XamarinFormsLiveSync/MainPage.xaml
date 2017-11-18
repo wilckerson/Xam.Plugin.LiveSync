@@ -27,9 +27,25 @@
         </OnPlatform>-->
     <!--</ContentPage.Content>-->
     <!--xmlns:seg="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions"-->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            
+            <OnPlatform x:TypeArguments="Font" Android="10" iOS="40" WinPhone="20" x:Key="TitleFontSize2" />
 
+            <Style x:Key="MyTitleLabel2" TargetType="Label" BaseResourceKey="TitleStyle">
+                <Setter Property="LineBreakMode" Value="TailTruncation" />
+                <Setter Property="XAlign" Value="Center" />
+                <Setter Property="Font" Value="{StaticResource TitleFontSize2}" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <StackLayout Margin="20">
-        <StackLayout.Children>
+
+        <Label Text="Estilizado" Style="{StaticResource MyTitleLabel}"/>
+        <!--<Entry Placeholder="jkkkj"/>-->
+        <!--<Button Text="huehue"/>-->
+        <!--<StackLayout.Children>
             <OnPlatform x:TypeArguments="View">
             <On Platform="Android">
                 <StackLayout>
@@ -41,7 +57,8 @@
                 <Label Text="iOS Label"/>
             </On>
         </OnPlatform>
-        </StackLayout.Children>
+        </StackLayout.Children>-->
+        
         <!--<StackLayout.BackgroundColor>
             <OnIdiom x:TypeArguments="Color">
                 <OnIdiom.Phone>Green</OnIdiom.Phone>

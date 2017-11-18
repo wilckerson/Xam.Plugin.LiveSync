@@ -7,6 +7,15 @@
         <ResourceDictionary>
             <Color x:Key="Primary">#2196F3</Color>
             <Color x:Key="PrimaryDark">#272A65</Color>
+
+            <OnPlatform x:TypeArguments="Font" Android="20" iOS="40" WinPhone="20" x:Key="TitleFontSize" />
+
+            <Style x:Key="MyTitleLabel" TargetType="Label" BaseResourceKey="TitleStyle">
+                <Setter Property="LineBreakMode" Value="TailTruncation" />
+                <Setter Property="XAlign" Value="Center" />
+                <Setter Property="Font" Value="{StaticResource TitleFontSize}" />
+            </Style>
+            
         </ResourceDictionary>
         <!-- Application resource dictionary -->
 
