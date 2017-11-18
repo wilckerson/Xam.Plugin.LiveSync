@@ -132,11 +132,35 @@ namespace Xam.Plugin.LiveSync.XamlParser
         object ExtractValueFromOnPlatform(AstNode onPlatformNode)
         {
             object value = null;
+            string currentPlatform = Device.RuntimePlatform;
+            onPlatformNode.AttributeProperties.TryGetValue("TypeArguments", out string typeDescription);
 
-            onPlatformNode.AttributeProperties.TryGetValue("TypeArguments",out string typeDescription);
-            onPlatformNode.AttributeProperties.TryGetValue(Device.RuntimePlatform, out string valuePlatformDescription);
+            string valuePlatformDescription = null;
+            if (onPlatformNode.Childrens.Any())
+            {
+                var child = onPlatformNode.Childrens.FirstOrDefault(f =>
+                    f.AttributeProperties.ContainsKey("Platform")
+                    && f.AttributeProperties["Platform"].Contains(currentPlatform));
 
-            if(string.IsNullOrEmpty(typeDescription) || string.IsNullOrEmpty(valuePlatformDescription))
+                if (child != null)
+                {
+                    if (child.AttributeProperties.ContainsKey("Value"))
+                    {
+                        valuePlatformDescription = child.AttributeProperties["Value"];
+                    }
+                    else
+                    {
+                        valuePlatformDescription = child.TextContent;
+                    }
+                }
+            }
+            else
+            {
+                onPlatformNode.AttributeProperties.TryGetValue(currentPlatform, out valuePlatformDescription);
+            }
+
+
+            if (string.IsNullOrEmpty(typeDescription) || string.IsNullOrEmpty(valuePlatformDescription))
             {
                 return value;
             }
@@ -156,7 +180,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
                 if (converterType != null)
                 {
                     var typeConverter = (TypeConverter)Activator.CreateInstance(converterType);
-                    value = typeConverter.ConvertFromInvariantString(valuePlatformDescription);                    
+                    value = typeConverter.ConvertFromInvariantString(valuePlatformDescription);
                 }
             }
             return value;

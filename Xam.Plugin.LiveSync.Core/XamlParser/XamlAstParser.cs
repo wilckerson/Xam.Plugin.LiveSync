@@ -51,6 +51,8 @@ namespace Xam.Plugin.LiveSync.XamlParser
             ParseAttributeProperties(node, elm);
             ParseChildrens(node, elm);
 
+            node.TextContent = elm.Value;
+
             return node;
         }
         void ParseAttributeProperties(AstNode node, XElement elm)

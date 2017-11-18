@@ -12,6 +12,7 @@ namespace Xam.Plugin.LiveSync.XamlParser
         public Dictionary<string, string> AttributeProperties { get; set; }
         public Dictionary<string, string> AttachedProperties { get; set; }
         public List<AstNode> Childrens { get; set; }
+        public string TextContent { get; set; }
 
         public AstNode()
         {

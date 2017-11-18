@@ -11,13 +11,16 @@
         
         <Label Text="Xamarin Forms LiveSync =)" HorizontalOptions="Center">
             <Label.TextColor>
-                <OnPlatform x:TypeArguments="Color" Android="Red" iOS="Blue"/>
+                <OnPlatform x:TypeArguments="Color">
+                    <On Platform="Android">Blue</On>
+                    <On Platform="iOS" Value="Blue"/>
+                </OnPlatform>
             </Label.TextColor>
             <Label.Text>
                 <OnPlatform x:TypeArguments="x:String" Android="Android Str 2" iOS="Blue"/>
             </Label.Text>
             <Label.Margin>
-                <OnPlatform x:TypeArguments="Thickness" Android="100" iOS="0"/>
+                <OnPlatform x:TypeArguments="Thickness" Android="10" iOS="0"/>
             </Label.Margin>
         </Label>              
 
