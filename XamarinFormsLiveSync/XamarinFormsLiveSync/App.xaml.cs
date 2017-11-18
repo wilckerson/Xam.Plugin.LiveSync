@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 //using Websockets;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace XamarinFormsLiveSync
 {
     public partial class App : Application

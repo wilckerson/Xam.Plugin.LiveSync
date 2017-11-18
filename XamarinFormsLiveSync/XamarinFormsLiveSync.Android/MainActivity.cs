@@ -22,16 +22,16 @@ namespace XamarinFormsLiveSync.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-            
+
             // var host = Xam.Plugin.LiveSync.LiveSyncConfig.GetServerHost();
 
             //Xam.Plugin.LiveSync.Droid.LiveSync.Init();
-          
+
             //SegmentedControl.FormsPlugin.Android.SegmentedControlRenderer.Init();
 
             LoadApplication(new App());
 
-      Xam.Plugin.LiveSync.Droid.LiveSync.Init();//"http://192.168.0.10:9759");
+            Xam.Plugin.LiveSync.Droid.LiveSync.Init("http://192.168.0.10:9759");
 
         }
     }

@@ -34,7 +34,6 @@ namespace XamarinFormsLiveSync
         public MainPage()
         {
             InitializeComponent();
-
             //var vm = new ViewModel();
             //BindingContext = vm;
 

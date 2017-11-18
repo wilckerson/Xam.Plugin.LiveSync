@@ -8,17 +8,26 @@
     <!--xmlns:seg="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions"-->
     
     <StackLayout Margin="20">
+        
+        <Label Text="Xamarin Forms LiveSync =)" HorizontalOptions="Center">
+            <Label.TextColor>
+                <OnPlatform x:TypeArguments="Color" Android="Red" iOS="Blue"/>
+            </Label.TextColor>
+            <Label.Text>
+                <OnPlatform x:TypeArguments="x:String" Android="Android Str 2" iOS="Blue"/>
+            </Label.Text>
+            <Label.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Android="100" iOS="0"/>
+            </Label.Margin>
+        </Label>              
 
-    
-        <Label Text="Xamarin Forms LiveSync =)" HorizontalOptions="Center"/>
-
-        <Button Text="Nuget + target" BackgroundColor="{StaticResource PrimaryDark}" TextColor="Red"/>
+        <!--<Button Text="Nuget + target" BackgroundColor="{StaticResource PrimaryDark}" TextColor="Red"/>
 
         <Entry Placeholder="Data de Nascimento" HeightRequest="40" Keyboard="Numeric">
             <Entry.Behaviors>
                 <behaviors:DataMaskBehavior/>
             </Entry.Behaviors>
-        </Entry>
+        </Entry>-->
         
         <!--<seg:SegmentedControl x:Name="SegControl" TintColor="#007AFF" SelectedSegment="0">
             <seg:SegmentedControl.Children>
