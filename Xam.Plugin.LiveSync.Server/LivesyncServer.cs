@@ -37,15 +37,26 @@ namespace Xam.Plugin.LiveSync.Server
             watcher = new FileSystemWatcher();
             watcher.Path = watcherPath;
             watcher.IncludeSubdirectories = true;
-            watcher.NotifyFilter = NotifyFilters.LastWrite;
+            //watcher.NotifyFilter = NotifyFilters.LastWrite;
             watcher.Filter = "*.*";
+            watcher.Created += Watcher_Created;
             watcher.Changed += new FileSystemEventHandler(OnChanged);
             watcher.EnableRaisingEvents = true;
         }
 
+        private void Watcher_Created(object sender, FileSystemEventArgs e)
+        {
+            Intercep(sender, e);
+        }
+
         private async void OnChanged(object sender, FileSystemEventArgs e)
         {
-            if (e.ChangeType == WatcherChangeTypes.Changed)
+            Intercep(sender, e);
+        }
+
+            private async void Intercep(object sender, FileSystemEventArgs e)
+        {
+            //if (e.ChangeType == WatcherChangeTypes.Changed)
             {
                 var path = e.FullPath;
 

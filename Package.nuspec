@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Xam.Plugin.LiveSync</id>
-    <version>1.0.33</version>
+    <version>1.0.34</version>
     <title>Xamarin Forms XAML LiveSync</title>
     <authors>Wilckerson Ganda, Eder Moises</authors>
     <owners>Wilckerson Ganda</owners>
@@ -10,9 +10,9 @@
     <projectUrl>https://github.com/wilckerson/Xam.Plugin.LiveSync</projectUrl>
     <!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>See your Xamarin Forms XAML interface changing instantaneously just on save the file, without wasting time building the project every time. \o/</description>
+    <description>See your Xamarin Forms XAML interface changing instantaneously just on save the file, without wasting time building the project every time. It's FREE and OpenSource \o/</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright 2017</copyright>
+    <copyright>Copyright 2018</copyright>
     <tags>xamarin xamarin.forms xaml livesync live sync</tags>
     <dependencies>
         <group>

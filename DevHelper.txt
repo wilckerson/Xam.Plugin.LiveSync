@@ -26,3 +26,43 @@ Basta clicar com botão direito no projeto Xam.Plugin.LiveSync.Server e configura
 
 Com o servidor sendo iniciado manualmente, é necessário informar a URL do host na inicializaçaõ do plugin dos projetos nativos do aplicativo que está sendo utilizado
 Ex:  Xam.Plugin.LiveSync.Droid.LiveSync.Init("http://192.168.0.10:9759");
+
+Gerando pacote Nuget
+==================================
+- Incrementar versão nos arquivos da pasta raiz: Package.nuspec e Xam.Plugin.LiveSync.targets
+- Exectar o 'Publish' do projeto Xam.Plugin.LiveSync.Initializer e do Xam.Plugin.LiveSync.Server, observando 
+a pasta de output (Geralmente 'bin\Release\PublishOutput')
+- Recompilar os projetos da pasta Lib
+- Abrir terminal na pasta raiz e executar o comando '.\nuget.exe pack'
+(Se não tiver instalado localmente, acesse https://www.nuget.org/downloads para baixar o .exe que deve ser colocado na pasta raiz deste projeto)
+- Com isso um arquivo 'Xam.Plugin.LiveSync.{VERSION}.nupkg' será gerado
+- Basta ir até um projeto que se deseja testar e adicionar esse arquivo local via Nuget (Configurando o Package Source para apontar para esta pasta)
+
+
+TODOs
+===================================
+- Suportar .Net Standard 2.0
+- Automatizar processo de Build
+
+Shared Project
+=======================================
+Incluir o XML abaixo no csproj de cada plataforma e configurar corretamente o caminho das variaveis
+
+<Target Name="BeforeBuild">
+    <PropertyGroup>
+      <pkgNameVersion>1.0.34</pkgNameVersion>
+      <yourAppPath>$(SolutionDir)\App2\App2</yourAppPath>
+      <!--<nugetPackageLocation>$(SolutionDir)\packages</nugetPackageLocation>-->
+      <nugetPackageLocation>C:\Users\Wilckerson Ganda\.nuget\packages</nugetPackageLocation>
+    </PropertyGroup>
+
+    <Message Text="Xam.Plugin.LiveSync: Generate LiveSyncConfig with server host" Importance="high" />
+
+    <Exec Command="dotnet %22$(nugetPackageLocation)\Xam.Plugin.LiveSync\$(pkgNameVersion)\server\Xam.Plugin.LiveSync.Initializer.dll%22 --project-path %22$(yourAppPath)%22 --server-path %22$(nugetPackageLocation)\Xam.Plugin.LiveSync\$(pkgNameVersion)\server\Xam.Plugin.LiveSync.Server.dll%22 --config-path %22$(nugetPackageLocation)\Xam.Plugin.LiveSync\$(pkgNameVersion)\server\LiveSync.host%22"/>
+
+    <Message Text="Xam.Plugin.LiveSync: The config file was generated" Importance="high" />
+    <ItemGroup>
+      <Compile Include="$(nugetPackageLocation)\Xam.Plugin.LiveSync\$(pkgNameVersion)\server\LiveSyncConfig.cs" />
+    </ItemGroup>
+
+  </Target>
