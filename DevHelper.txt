@@ -1,0 +1,28 @@
+Arquitetura
+============================
+
+Ao dar Build no projeto, um programa em .Net core é chamado através do target que foi incluido no .csproj.
+Esse programa faz a geração da classe de configuração automatica para o servidor de sincronização e inicia ele num outro processo
+Um servidor de sincronização em .Net core é iniciado em backgroud para ficar monitorando as alterações feitas nos arquivos .xaml do projeto.
+A cada alteração, o arquivo e transmitido para o App via webSocket.
+Quando o App recebe o arquivo xaml, é realizado uma interpretação dele para que seja reconstruido os elementos da interface.
+O programa de inicialização e o servidor de sincronização são incluidos e distribuidos dentro do pacote Nuget
+
+
+Pastas
+=================================
+
+\App => Aplicativo para conduzir o desenvolvimento do plugin
+\Lib => Contém os projetos principais do plugin Nuget
+\Server => Projetos auxiliares
+\Server\Xam.Plugin.LiveSync.Initializer => Responsável por iniciar o servidor de sincronização e gera uma classe de configuração automatica
+\Server\Xam.Plugin.LiveSync.Server => Servidor de sincornização, que fica escutando as mudanças em arquivos .xaml e transmite para o App via WebSocket
+
+Dicas
+=================================
+
+Para facilitar o desenvolvimento, o servidor pode ser iniciado manualmente, passando como argumento o caminho do projeto que se deseja debugar. 
+Basta clicar com botão direito no projeto Xam.Plugin.LiveSync.Server e configurar o argumento '--project-path' na sessão 'Debug'
+
+Com o servidor sendo iniciado manualmente, é necessário informar a URL do host na inicializaçaõ do plugin dos projetos nativos do aplicativo que está sendo utilizado
+Ex:  Xam.Plugin.LiveSync.Droid.LiveSync.Init("http://192.168.0.10:9759");

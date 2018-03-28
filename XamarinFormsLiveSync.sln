@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsLiveSync.Androi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsLiveSync", "XamarinFormsLiveSync\XamarinFormsLiveSync\XamarinFormsLiveSync.csproj", "{552B7789-073D-4F07-A162-5D744CB8A745}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E3A0F09D-9CDB-42BB-91A8-4CE0434B68AF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{E3A0F09D-9CDB-42BB-91A8-4CE0434B68AF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{C5FA91ED-E5E3-43CE-93D8-92901D890B41}"
 EndProject
@@ -26,6 +26,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xam.Plugin.LiveSync.iOS", "Xam.Plugin.LiveSync.iOS\Xam.Plugin.LiveSync.iOS.csproj", "{3EA328BA-1B2D-4B6D-94A7-6B6FB1A59238}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{F0C5A185-F0F3-4565-A491-97B66DE5B5F2}"
+	ProjectSection(SolutionItems) = preProject
+		DevHelper.txt = DevHelper.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
